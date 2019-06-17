@@ -19,6 +19,7 @@ export class Profiledetails extends Component {
     selectedYear: "",
     academicData: [],
     showTable: false,
+    isDisabled: true,
     root: {
       width: "100%",
       overflowX: "auto"
@@ -85,6 +86,15 @@ export class Profiledetails extends Component {
       this.setState({ showTable: true });
     }
   };
+
+  toggleDetails = e => {
+    if (this.refs.academicYear.value === "") {
+      this.setState({ isDisabled: true });
+    } else {
+      this.setState({ isDisabled: false });
+    }
+    this.setState({ showTable: false });
+  };
   render() {
     return (
       <div className="profile-details-cnt mt-5">
@@ -100,7 +110,11 @@ export class Profiledetails extends Component {
               <div className="col-md-8 mb-3">
                 <div className="input-group">
                   {
-                    <select ref="academicYear" className="custom-select">
+                    <select
+                      ref="academicYear"
+                      onChange={this.toggleDetails}
+                      className="custom-select"
+                    >
                       {this.state.academics.map(team => (
                         <option key={team.value} value={team.value}>
                           {team.display}
@@ -109,7 +123,9 @@ export class Profiledetails extends Component {
                     </select>
                   }
                   <div className="input-group-append">
+                    {this.refs.academicYear}
                     <button
+                      disabled={this.state.isDisabled}
                       className="btn btn-md btn-primary"
                       onClick={this.showResult}
                     >
