@@ -1,10 +1,5 @@
-.App {
-  text-align: center;
-}
-
 .App-logo {
   animation: App-logo-spin infinite 20s linear;
-  height: 40vmin;
   pointer-events: none;
 }
 
@@ -21,6 +16,124 @@
 
 .App-link {
   color: #61dafb;
+}
+
+.login-overlay {
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  align-content: center;
+}
+.left-cnt {
+  width: 33.333%;
+  background: url(images/loginBg.png) no-repeat #005cda;
+  background-position: center bottom;
+  background-size: 100%;
+}
+.right-cnt {
+  padding-bottom: 20px;
+}
+.login-cnt {
+  background-size: cover;
+  width: 60%;
+  max-width: 700px;
+  position: relative;
+  background: #fff;
+  box-shadow: 0px 0px 20px rgba(0, 0, 0, 0.15);
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-wrap: wrap;
+  flex-wrap: wrap;
+  border-radius: 6px;
+  overflow: hidden;
+}
+.login-img {
+  max-width: 100%;
+}
+.login-cnt form label {
+  text-align: left;
+}
+
+.login-cnt .title {
+  font-weight: bold;
+  font-size: 28px;
+  margin-bottom: 20px;
+  margin-top: 20px;
+  text-align: left;
+  position: relative;
+}
+.login-cnt .title::after {
+  position: absolute;
+  left: 0;
+  bottom: -5px;
+  width: 90px;
+  height: 5px;
+  background: #005cda;
+  content: "";
+}
+.box {
+  text-align: center;
+}
+.selc-role {
+  color: #9d9da8;
+  margin-bottom: 20px;
+  text-align: left;
+}
+.box-title {
+  margin-top: 10px;
+  font-weight: 400;
+}
+.login-cnt .form-group {
+  margin-bottom: 0;
+}
+.login-cnt .form-control {
+  border-radius: 0;
+  border: solid 1px #9d9da8;
+}
+.login-cnt .form-control:focus {
+  outline: none;
+}
+.login-btn {
+  border-radius: 0;
+  padding: 5px 10px;
+}
+#loginTabs.nav-tabs {
+  border: none;
+}
+#loginTabs .nav-link {
+  color: #9d9da8;
+  border-radius: 0.2rem;
+  margin-bottom: 10px;
+  border: solid 2px #e5e5e9;
+  padding: 20px;
+}
+#loginTabs .nav-link.active {
+  color: #54bb01;
+  border: solid 2px #54bb01;
+}
+.logo-cnt {
+  padding-top: 30px;
+}
+.profile-detail {
+  border-right: solid 1px #dee2e6;
+  border-left: solid 1px #dee2e6;
+  border-bottom: solid 1px #dee2e6;
+}
+
+.profile-detail .thead-dark th {
+  border: none;
+}
+
+.profile-cnt,
+.profile-details-cnt {
+  background: #fff;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+  padding: 20px;
 }
 
 @keyframes App-logo-spin {

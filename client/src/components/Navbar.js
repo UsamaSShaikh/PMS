@@ -11,11 +11,11 @@ class Navbar extends Component {
   render() {
     const loginRegLink = (
       <ul className="navbar-nav">
-        <li className="nav-item">
+        {/* <li className="nav-item">
           <Link to="/login" className="nav-link">
             Login
           </Link>
-        </li>
+        </li> */}
         <li className="nav-item">
           <Link to="/register" className="nav-link">
             Register
@@ -37,9 +37,13 @@ class Navbar extends Component {
         </li>
       </ul>
     );
-
     return (
-      <nav className="navbar navbar-expand-lg navbar-dark bg-dark rounded">
+      <nav
+        className={
+          "navbar navbar-expand-lg navbar-dark bg-dark " +
+          (this.props.location.pathname === "/" ? " d-none" : " d-flex")
+        }
+      >
         <button
           className="navbar-toggler"
           type="button"
@@ -56,13 +60,6 @@ class Navbar extends Component {
           className="collapse navbar-collapse justify-content-md-center"
           id="navbar1"
         >
-          <ul className="navbar-nav">
-            <li className="nav-item">
-              <Link to="/" className="nav-link">
-                Home
-              </Link>
-            </li>
-          </ul>
           {localStorage.usertoken ? userLink : loginRegLink}
         </div>
       </nav>
