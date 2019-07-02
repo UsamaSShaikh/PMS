@@ -6,11 +6,11 @@ module.exports = db.sequelize.define(
   {
     srno: {
       type: Sequelize.INTEGER,
+      primaryKey: true,
       autoIncrement: true
     },
     studentid: {
-      type: Sequelize.INTEGER,
-      primaryKey: true
+      type: Sequelize.INTEGER
     },
     academicyear: {
       type: Sequelize.STRING

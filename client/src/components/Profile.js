@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
-import { getStudentAcamedics, getStudentMarks } from "./UserFunctions";
 import jwt_decode from "jwt-decode";
 
 class Profile extends Component {
@@ -53,10 +52,7 @@ class Profile extends Component {
             <h1 className="mb-5">PROFILE</h1>
           </div>
           <div className="col-sm-3 text-left">
-            <img
-              src="https://dummyimage.com/150x150/ccc/fff"
-              alt="dummy image"
-            />
+            <img src="https://dummyimage.com/150x150/ccc/fff" alt="dummy" />
           </div>
           <div className="col-md-9">
             <table className="table mx-auto">
@@ -74,7 +70,7 @@ class Profile extends Component {
                   <td>{this.state.email}</td>
                 </tr>
                 <tr>
-                  <td colspan="2">
+                  <td colSpan="2">
                     <Link className="btn btn-primary" to="/details">
                       Show Details
                     </Link>

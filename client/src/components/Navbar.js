@@ -24,7 +24,7 @@ class Navbar extends Component {
       </ul>
     );
     const userLink = (
-      <ul className="navbar-nav">
+      <ul className="nav navbar-nav navbar-right">
         <li className="nav-item">
           <Link to="/profile" className="nav-link">
             User
@@ -40,7 +40,7 @@ class Navbar extends Component {
     return (
       <nav
         className={
-          "navbar navbar-expand-lg navbar-dark bg-dark " +
+          "navbar navbar-expand-lg kp-navbar" +
           (this.props.location.pathname === "/" ? " d-none" : " d-flex")
         }
       >

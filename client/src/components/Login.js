@@ -46,7 +46,12 @@ class Login extends Component {
         <div className="login-cnt">
           <div className="col-sm-4 left-cnt">
             <div className="logo-cnt">
-              <img src="../images/logo.png" alt="logo" className="login-img" />
+              <img
+                src="../images/logo-icon.jpg"
+                alt="logo"
+                className="login-img"
+              />
+              <h5>Knowledge Part Charitable Trust</h5>
             </div>
           </div>
           <div className="col-sm-8 right-cnt">

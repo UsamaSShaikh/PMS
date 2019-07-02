@@ -10,6 +10,7 @@ const Sequelize = require("sequelize");
 const Student = require("../models/User");
 const Academics = require("../models/Academics");
 const MarkSheet = require("../models/MarkSheet");
+const Marks = require("../models/marks");
 
 users.use(cors());
 
@@ -30,7 +31,7 @@ users.post("/register", (req, res) => {
     .then(user => {
       // Check if record exists in db
       if (user) {
-        console.log("Student Exists");
+        // console.log("Student Exists");
         bcrypt.hash(req.body.password, 10, (err, hash) => {
           userData.password = hash;
           user
@@ -42,7 +43,7 @@ users.post("/register", (req, res) => {
             });
         });
       } else {
-        console.log("Student does not exists 1");
+        // console.log("Student does not exists 1");
         res.status(400).send({
           status: 400,
           message: "Student does not exists",
@@ -51,7 +52,7 @@ users.post("/register", (req, res) => {
       }
     })
     .catch(err => {
-      console.log("Student does not exists 2");
+      // console.log("Student does not exists 2");
       res.status(400).send({
         status: 400,
         message: "Student does not exists",
@@ -61,7 +62,7 @@ users.post("/register", (req, res) => {
 });
 
 users.post("/login", (req, res) => {
-  console.log(req.body);
+  // // console.log(req.body);
   const userData = {
     student_id: "",
     firstName: "",
@@ -87,10 +88,6 @@ users.post("/login", (req, res) => {
           });
           res.send(token);
         } else {
-          console.log("Invalid Password");
-          //res.status(400).json({ error: "Invalid Password" });
-          //res.status(400);
-          //res.send("Invalid Password");
           res.status(400).send({
             status: 400,
             message: "Invalid Password",
@@ -98,8 +95,6 @@ users.post("/login", (req, res) => {
           });
         }
       } else {
-        console.log("Student does not exist");
-        //res.status(400).json({ error: "Student does not exist" });
         res.status(400).send({
           status: 400,
           message: "Student does not exist",
@@ -108,14 +103,13 @@ users.post("/login", (req, res) => {
       }
     })
     .catch(err => {
-      console.log("Us is here 3");
       res.status(400).json({ error: err });
     });
 });
 
 users.post("/studentAcademics", (req, res) => {
   const userData = {};
-  console.log("Route : " + req.body);
+  // ("Route : " + req.body);
   Academics.findAll(
     {
       attributes: ["academicyear"]
@@ -129,7 +123,6 @@ users.post("/studentAcademics", (req, res) => {
   )
     .then(user => {
       if (user) {
-        console.log("Academics In Progress");
         res.send(user);
       } else {
         res.status(400).send({
@@ -140,15 +133,14 @@ users.post("/studentAcademics", (req, res) => {
       }
     })
     .catch(err => {
-      console.log("Us is here 4");
+      // // console.log("Us is here 4");
       res.status(400).json({ error: err });
     });
 });
 
 users.post("/studentMarks", (req, res) => {
   const userData = {};
-  console.log("Route Marks : ");
-  console.log(req.body);
+
   db.sequelize
     .query(
       'select s.firstName,s.studentid,e.examname,subject1.History,subject2.Geography,subject3.Politics,subject4.Economics,subject5.Current,subject6.Technology,subject7.Ethics,subject8.CSAT,subject9.English,subject10.ModLang from studentsdetails s,exams e, marksheet r,(select subjectID,(sum(chapter1)+(chapter2)+(chapter3)+(chapter4)+(chapter5)+(chapter6)+(chapter7)+(chapter8)+(chapter9)+(chapter10)) as History from marksheet group by subjectID) subject1,(select subjectID,(sum(chapter1)+(chapter2)+(chapter3)+(chapter4)+(chapter5)+(chapter6)+(chapter7)+(chapter8)+(chapter9)+(chapter10)) as Geography from marksheet group by subjectID) subject2,(select subjectID,(sum(chapter1)+(chapter2)+(chapter3)+(chapter4)+(chapter5)+(chapter6)+(chapter7)+(chapter8)+(chapter9)+(chapter10)) as Politics from marksheet group by subjectID) subject3,(select subjectID,(sum(chapter1)+(chapter2)+(chapter3)+(chapter4)+(chapter5)+(chapter6)+(chapter7)+(chapter8)+(chapter9)+(chapter10)) as Economics from marksheet group by subjectID) subject4,(select subjectID,(sum(chapter1)+(chapter2)+(chapter3)+(chapter4)+(chapter5)+(chapter6)+(chapter7)+(chapter8)+(chapter9)+(chapter10)) as Current from marksheet group by subjectID) subject5,(select subjectID,(sum(chapter1)+(chapter2)+(chapter3)+(chapter4)+(chapter5)+(chapter6)+(chapter7)+(chapter8)+(chapter9)+(chapter10)) as Technology from marksheet group by subjectID) subject6,(select subjectID,(sum(chapter1)+(chapter2)+(chapter3)+(chapter4)+(chapter5)+(chapter6)+(chapter7)+(chapter8)+(chapter9)+(chapter10)) as Ethics from marksheet group by subjectID) subject7,(select subjectID,(sum(chapter1)+(chapter2)+(chapter3)+(chapter4)+(chapter5)+(chapter6)+(chapter7)+(chapter8)+(chapter9)+(chapter10)) as CSAT from marksheet group by subjectID) subject8,(select subjectID,(sum(chapter1)+(chapter2)+(chapter3)+(chapter4)+(chapter5)+(chapter6)+(chapter7)+(chapter8)+(chapter9)+(chapter10)) as English from marksheet group by subjectID) subject9,(select subjectID,(sum(chapter1)+(chapter2)+(chapter3)+(chapter4)+(chapter5)+(chapter6)+(chapter7)+(chapter8)+(chapter9)+(chapter10)) as ModLang from marksheet group by subjectID) subject10 where subject1.subjectID="' +
@@ -183,40 +175,52 @@ users.post("/studentMarks", (req, res) => {
       }
     )
     .then(record => {
-      // Each record will now be an instance of MarkSheet
-      console.log("In Sequelize query");
-      console.log(record);
       res.send(record);
     });
-  /*
-  MarkSheet.findAll({
-    where: {
-      studentid: req.body.student_id,
-      academicyear: req.body.academics
-    }
-  })
-    .then(user => {
-      if (user) {
-        //WIP
-        console.log("MarkSheet In Progress");
-        console.log(user);
-        let token = jwt.sign(userData, process.env.SECRET_KEY, {
-          expiresIn: 1440
-        });
-        res.send(user);
-      } else {
-        res.status(400).send({
-          status: 400,
-          message: "Invalid MarkSheet",
-          type: "internal"
-        });
+});
+
+users.post("/marks", (req, res) => {
+  console.log(req.body);
+  let user = req.body;
+  db.sequelize
+    .query(
+      "SELECT marksheet.*, subjects.subjectname, exams.examname FROM marksheet, subjects, exams WHERE marksheet.studentid = " +
+        user.student_id +
+        " AND marksheet.subjectid = " +
+        user.subject +
+        " AND marksheet.academicyear = '" +
+        user.year +
+        "' AND subjects.subjectid = " +
+        user.subject +
+        " AND marksheet.examid = exams.examid",
+      {
+        raw: true,
+        hierarchy: true,
+        model: Marks,
+        mapToModel: true
+        // pass true here if you have any mapped fields
       }
-    })
-    .catch(err => {
-      console.log("Us is here MarkSheet 4");
-      res.status(400).json({ error: err });
+    )
+    .then(record => {
+      // Each record will now be an instance of MarkSheet
+      // console.log(record);
+      res.send(record);
     });
-    */
+});
+
+users.post("/subject", (req, res) => {
+  db.sequelize
+    .query("SELECT * FROM `subjects`", {
+      raw: true,
+      hierarchy: true,
+      model: Marks,
+      mapToModel: true
+      // pass true here if you have any mapped fields
+    })
+    .then(record => {
+      // Each record will now be an instance of MarkSheet
+      res.send(record);
+    });
 });
 
 module.exports = users;
