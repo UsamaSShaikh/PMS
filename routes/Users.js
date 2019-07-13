@@ -10,7 +10,7 @@ const Sequelize = require("sequelize");
 const Student = require("../models/User");
 const Academics = require("../models/Academics");
 const MarkSheet = require("../models/MarkSheet");
-const Marks = require("../models/marks");
+const Exams = require("../models/Exams");
 
 users.use(cors());
 
@@ -31,7 +31,7 @@ users.post("/register", (req, res) => {
     .then(user => {
       // Check if record exists in db
       if (user) {
-        // console.log("Student Exists");
+        ////console.log("Student Exists");
         bcrypt.hash(req.body.password, 10, (err, hash) => {
           userData.password = hash;
           user
@@ -43,7 +43,7 @@ users.post("/register", (req, res) => {
             });
         });
       } else {
-        // console.log("Student does not exists 1");
+        //console.log("Student does not exists 1");
         res.status(400).send({
           status: 400,
           message: "Student does not exists",
@@ -52,7 +52,7 @@ users.post("/register", (req, res) => {
       }
     })
     .catch(err => {
-      // console.log("Student does not exists 2");
+      //console.log("Student does not exists 2");
       res.status(400).send({
         status: 400,
         message: "Student does not exists",
@@ -62,7 +62,7 @@ users.post("/register", (req, res) => {
 });
 
 users.post("/login", (req, res) => {
-  // // console.log(req.body);
+  //console.log(req.body);
   const userData = {
     student_id: "",
     firstName: "",
@@ -88,6 +88,10 @@ users.post("/login", (req, res) => {
           });
           res.send(token);
         } else {
+          //console.log("Invalid Password");
+          //res.status(400).json({ error: "Invalid Password" });
+          //res.status(400);
+          //res.send("Invalid Password");
           res.status(400).send({
             status: 400,
             message: "Invalid Password",
@@ -95,6 +99,8 @@ users.post("/login", (req, res) => {
           });
         }
       } else {
+        //console.log("Student does not exist");
+        //res.status(400).json({ error: "Student does not exist" });
         res.status(400).send({
           status: 400,
           message: "Student does not exist",
@@ -103,13 +109,14 @@ users.post("/login", (req, res) => {
       }
     })
     .catch(err => {
+      //console.log("Us is here 3");
       res.status(400).json({ error: err });
     });
 });
 
 users.post("/studentAcademics", (req, res) => {
   const userData = {};
-  // ("Route : " + req.body);
+  //console.log("Route : " + req.body);
   Academics.findAll(
     {
       attributes: ["academicyear"]
@@ -123,6 +130,7 @@ users.post("/studentAcademics", (req, res) => {
   )
     .then(user => {
       if (user) {
+        //console.log("Academics In Progress");
         res.send(user);
       } else {
         res.status(400).send({
@@ -133,39 +141,224 @@ users.post("/studentAcademics", (req, res) => {
       }
     })
     .catch(err => {
-      // // console.log("Us is here 4");
+      //console.log("Us is here 4");
       res.status(400).json({ error: err });
     });
 });
 
 users.post("/studentMarks", (req, res) => {
-  const userData = {};
-
+  const userData = {},
+    academicYear = req.body.academics,
+    student_id = req.body.student_id;
+  console.log("Route Marks : ");
+  console.log(req.body.academics);
   db.sequelize
     .query(
-      'select s.firstName,s.studentid,e.examname,subject1.History,subject2.Geography,subject3.Politics,subject4.Economics,subject5.Current,subject6.Technology,subject7.Ethics,subject8.CSAT,subject9.English,subject10.ModLang from studentsdetails s,exams e, marksheet r,(select subjectID,(sum(chapter1)+(chapter2)+(chapter3)+(chapter4)+(chapter5)+(chapter6)+(chapter7)+(chapter8)+(chapter9)+(chapter10)) as History from marksheet group by subjectID) subject1,(select subjectID,(sum(chapter1)+(chapter2)+(chapter3)+(chapter4)+(chapter5)+(chapter6)+(chapter7)+(chapter8)+(chapter9)+(chapter10)) as Geography from marksheet group by subjectID) subject2,(select subjectID,(sum(chapter1)+(chapter2)+(chapter3)+(chapter4)+(chapter5)+(chapter6)+(chapter7)+(chapter8)+(chapter9)+(chapter10)) as Politics from marksheet group by subjectID) subject3,(select subjectID,(sum(chapter1)+(chapter2)+(chapter3)+(chapter4)+(chapter5)+(chapter6)+(chapter7)+(chapter8)+(chapter9)+(chapter10)) as Economics from marksheet group by subjectID) subject4,(select subjectID,(sum(chapter1)+(chapter2)+(chapter3)+(chapter4)+(chapter5)+(chapter6)+(chapter7)+(chapter8)+(chapter9)+(chapter10)) as Current from marksheet group by subjectID) subject5,(select subjectID,(sum(chapter1)+(chapter2)+(chapter3)+(chapter4)+(chapter5)+(chapter6)+(chapter7)+(chapter8)+(chapter9)+(chapter10)) as Technology from marksheet group by subjectID) subject6,(select subjectID,(sum(chapter1)+(chapter2)+(chapter3)+(chapter4)+(chapter5)+(chapter6)+(chapter7)+(chapter8)+(chapter9)+(chapter10)) as Ethics from marksheet group by subjectID) subject7,(select subjectID,(sum(chapter1)+(chapter2)+(chapter3)+(chapter4)+(chapter5)+(chapter6)+(chapter7)+(chapter8)+(chapter9)+(chapter10)) as CSAT from marksheet group by subjectID) subject8,(select subjectID,(sum(chapter1)+(chapter2)+(chapter3)+(chapter4)+(chapter5)+(chapter6)+(chapter7)+(chapter8)+(chapter9)+(chapter10)) as English from marksheet group by subjectID) subject9,(select subjectID,(sum(chapter1)+(chapter2)+(chapter3)+(chapter4)+(chapter5)+(chapter6)+(chapter7)+(chapter8)+(chapter9)+(chapter10)) as ModLang from marksheet group by subjectID) subject10 where subject1.subjectID="' +
+      'SELECT S.firstName,S.studentid,E.examname, TRUNCATE((SUM(CASE WHEN subjectid = "' +
         101 +
-        '" and subject2.subjectID="' +
+        '" THEN M.chapter1 END + CASE WHEN subjectid = "' +
+        101 +
+        '" THEN M.chapter2 END + CASE WHEN subjectid = "' +
+        101 +
+        '" THEN M.chapter3 END + CASE WHEN subjectid = "' +
+        101 +
+        '" THEN M.chapter4 END + CASE WHEN subjectid = "' +
+        101 +
+        '" THEN M.chapter5 END + CASE WHEN subjectid = "' +
+        101 +
+        '" THEN M.chapter6 END + CASE WHEN subjectid = "' +
+        101 +
+        '" THEN M.chapter7 END + CASE WHEN subjectid = "' +
+        101 +
+        '" THEN M.chapter8 END + CASE WHEN subjectid = "' +
+        101 +
+        '" THEN M.chapter9 END + CASE WHEN subjectid = "' +
+        101 +
+        '" THEN M.chapter10 END)/10),2) AS History, TRUNCATE((SUM(CASE WHEN subjectid = "' +
         102 +
-        '" and subject3.subjectID="' +
+        '" THEN M.chapter1 END + CASE WHEN subjectid = "' +
+        102 +
+        '" THEN M.chapter2 END + CASE WHEN subjectid = "' +
+        102 +
+        '" THEN M.chapter3 END + CASE WHEN subjectid = "' +
+        102 +
+        '" THEN M.chapter4 END + CASE WHEN subjectid = "' +
+        102 +
+        '" THEN M.chapter5 END + CASE WHEN subjectid = "' +
+        102 +
+        '" THEN M.chapter6 END + CASE WHEN subjectid = "' +
+        102 +
+        '" THEN M.chapter7 END + CASE WHEN subjectid = "' +
+        102 +
+        '" THEN M.chapter8 END + CASE WHEN subjectid = "' +
+        102 +
+        '" THEN M.chapter9 END + CASE WHEN subjectid = "' +
+        102 +
+        '" THEN M.chapter10 END)/10),2) AS Geography, TRUNCATE((SUM(CASE WHEN subjectid = "' +
         103 +
-        '" and subject4.subjectID="' +
+        '" THEN M.chapter1 END + CASE WHEN subjectid = "' +
+        103 +
+        '" THEN M.chapter2 END + CASE WHEN subjectid = "' +
+        103 +
+        '" THEN M.chapter3 END + CASE WHEN subjectid = "' +
+        103 +
+        '" THEN M.chapter4 END + CASE WHEN subjectid = "' +
+        103 +
+        '" THEN M.chapter5 END + CASE WHEN subjectid = "' +
+        103 +
+        '" THEN M.chapter6 END + CASE WHEN subjectid = "' +
+        103 +
+        '" THEN M.chapter7 END + CASE WHEN subjectid = "' +
+        103 +
+        '" THEN M.chapter8 END + CASE WHEN subjectid = "' +
+        103 +
+        '" THEN M.chapter9 END + CASE WHEN subjectid = "' +
+        103 +
+        '" THEN M.chapter10 END)/10),2) AS Politics, TRUNCATE((SUM(CASE WHEN subjectid = "' +
         104 +
-        '" and subject5.subjectID="' +
+        '" THEN M.chapter1 END + CASE WHEN subjectid = "' +
+        104 +
+        '" THEN M.chapter2 END + CASE WHEN subjectid = "' +
+        104 +
+        '" THEN M.chapter3 END + CASE WHEN subjectid = "' +
+        104 +
+        '" THEN M.chapter4 END + CASE WHEN subjectid = "' +
+        104 +
+        '" THEN M.chapter5 END + CASE WHEN subjectid = "' +
+        104 +
+        '" THEN M.chapter6 END + CASE WHEN subjectid = "' +
+        104 +
+        '" THEN M.chapter7 END + CASE WHEN subjectid = "' +
+        104 +
+        '" THEN M.chapter8 END + CASE WHEN subjectid = "' +
+        104 +
+        '" THEN M.chapter9 END + CASE WHEN subjectid = "' +
+        104 +
+        '" THEN M.chapter10 END)/10),2) AS Economics, TRUNCATE((SUM(CASE WHEN subjectid = "' +
         105 +
-        '" and subject6.subjectID="' +
+        '" THEN M.chapter1 END + CASE WHEN subjectid = "' +
+        105 +
+        '" THEN M.chapter2 END + CASE WHEN subjectid = "' +
+        105 +
+        '" THEN M.chapter3 END + CASE WHEN subjectid = "' +
+        105 +
+        '" THEN M.chapter4 END + CASE WHEN subjectid = "' +
+        105 +
+        '" THEN M.chapter5 END + CASE WHEN subjectid = "' +
+        105 +
+        '" THEN M.chapter6 END + CASE WHEN subjectid = "' +
+        105 +
+        '" THEN M.chapter7 END + CASE WHEN subjectid = "' +
+        105 +
+        '" THEN M.chapter8 END + CASE WHEN subjectid = "' +
+        105 +
+        '" THEN M.chapter9 END + CASE WHEN subjectid = "' +
+        105 +
+        '" THEN M.chapter10 END)/10),2) AS Current, TRUNCATE((SUM(CASE WHEN subjectid = "' +
         106 +
-        '" and subject7.subjectID="' +
+        '" THEN M.chapter1 END + CASE WHEN subjectid = "' +
+        106 +
+        '" THEN M.chapter2 END + CASE WHEN subjectid = "' +
+        106 +
+        '" THEN M.chapter3 END + CASE WHEN subjectid = "' +
+        106 +
+        '" THEN M.chapter4 END + CASE WHEN subjectid = "' +
+        106 +
+        '" THEN M.chapter5 END + CASE WHEN subjectid = "' +
+        106 +
+        '" THEN M.chapter6 END + CASE WHEN subjectid = "' +
+        106 +
+        '" THEN M.chapter7 END + CASE WHEN subjectid = "' +
+        106 +
+        '" THEN M.chapter8 END + CASE WHEN subjectid = "' +
+        106 +
+        '" THEN M.chapter9 END + CASE WHEN subjectid = "' +
+        106 +
+        '" THEN M.chapter10 END)/10),2) AS Technology, TRUNCATE((SUM(CASE WHEN subjectid = "' +
         107 +
-        '" and subject8.subjectID="' +
+        '" THEN M.chapter1 END + CASE WHEN subjectid = "' +
+        107 +
+        '" THEN M.chapter2 END + CASE WHEN subjectid = "' +
+        107 +
+        '" THEN M.chapter3 END + CASE WHEN subjectid = "' +
+        107 +
+        '" THEN M.chapter4 END + CASE WHEN subjectid = "' +
+        107 +
+        '" THEN M.chapter5 END + CASE WHEN subjectid = "' +
+        107 +
+        '" THEN M.chapter6 END + CASE WHEN subjectid = "' +
+        107 +
+        '" THEN M.chapter7 END + CASE WHEN subjectid = "' +
+        107 +
+        '" THEN M.chapter8 END + CASE WHEN subjectid = "' +
+        107 +
+        '" THEN M.chapter9 END + CASE WHEN subjectid = "' +
+        107 +
+        '" THEN M.chapter10 END)/10),2) AS Ethics, TRUNCATE((SUM(CASE WHEN subjectid = "' +
         108 +
-        '" and subject9.subjectID="' +
+        '" THEN M.chapter1 END + CASE WHEN subjectid = "' +
+        108 +
+        '" THEN M.chapter2 END + CASE WHEN subjectid = "' +
+        108 +
+        '" THEN M.chapter3 END + CASE WHEN subjectid = "' +
+        108 +
+        '" THEN M.chapter4 END + CASE WHEN subjectid = "' +
+        108 +
+        '" THEN M.chapter5 END + CASE WHEN subjectid = "' +
+        108 +
+        '" THEN M.chapter6 END + CASE WHEN subjectid = "' +
+        108 +
+        '" THEN M.chapter7 END + CASE WHEN subjectid = "' +
+        108 +
+        '" THEN M.chapter8 END + CASE WHEN subjectid = "' +
+        108 +
+        '" THEN M.chapter9 END + CASE WHEN subjectid = "' +
+        108 +
+        '" THEN M.chapter10 END)/10),2) AS CSAT, TRUNCATE((SUM(CASE WHEN subjectid = "' +
         109 +
-        '" and subject10.subjectID="' +
+        '" THEN M.chapter1 END + CASE WHEN subjectid = "' +
+        109 +
+        '" THEN M.chapter2 END + CASE WHEN subjectid = "' +
+        109 +
+        '" THEN M.chapter3 END + CASE WHEN subjectid = "' +
+        109 +
+        '" THEN M.chapter4 END + CASE WHEN subjectid = "' +
+        109 +
+        '" THEN M.chapter5 END + CASE WHEN subjectid = "' +
+        109 +
+        '" THEN M.chapter6 END + CASE WHEN subjectid = "' +
+        109 +
+        '" THEN M.chapter7 END + CASE WHEN subjectid = "' +
+        109 +
+        '" THEN M.chapter8 END + CASE WHEN subjectid = "' +
+        109 +
+        '" THEN M.chapter9 END + CASE WHEN subjectid = "' +
+        109 +
+        '" THEN M.chapter10 END)/10),2) AS English, TRUNCATE((SUM(CASE WHEN subjectid = "' +
         110 +
-        '" and s.studentid="' +
-        100001 +
-        '" group by s.firstName,s.studentid,e.examname',
+        '" THEN M.chapter1 END + CASE WHEN subjectid = "' +
+        110 +
+        '" THEN M.chapter2 END + CASE WHEN subjectid = "' +
+        110 +
+        '" THEN M.chapter3 END + CASE WHEN subjectid = "' +
+        110 +
+        '" THEN M.chapter4 END + CASE WHEN subjectid = "' +
+        110 +
+        '" THEN M.chapter5 END + CASE WHEN subjectid = "' +
+        110 +
+        '" THEN M.chapter6 END + CASE WHEN subjectid = "' +
+        110 +
+        '" THEN M.chapter7 END + CASE WHEN subjectid = "' +
+        110 +
+        '" THEN M.chapter8 END + CASE WHEN subjectid = "' +
+        110 +
+        '" THEN M.chapter9 END + CASE WHEN subjectid = "' +
+        110 +
+        '" THEN M.chapter10 END)/10),2) AS ModLang FROM marksheet M INNER JOIN studentsdetails S ON M.studentid = S.studentid INNER JOIN exams E ON M.examid = E.examid WHERE M.academicyear = "' +
+        academicYear +
+        '"AND S.studentid = "' +
+        student_id +
+        '"GROUP BY S.firstName,S.studentid,E.examname',
       {
         raw: true,
         hierarchy: true,
@@ -175,50 +368,9 @@ users.post("/studentMarks", (req, res) => {
       }
     )
     .then(record => {
-      res.send(record);
-    });
-});
-
-users.post("/marks", (req, res) => {
-  console.log(req.body);
-  let user = req.body;
-  db.sequelize
-    .query(
-      "SELECT marksheet.*, subjects.subjectname, exams.examname FROM marksheet, subjects, exams WHERE marksheet.studentid = " +
-        user.student_id +
-        " AND marksheet.subjectid = " +
-        user.subject +
-        " AND marksheet.academicyear = '" +
-        user.year +
-        "' AND subjects.subjectid = " +
-        user.subject +
-        " AND marksheet.examid = exams.examid",
-      {
-        raw: true,
-        hierarchy: true,
-        model: Marks,
-        mapToModel: true
-        // pass true here if you have any mapped fields
-      }
-    )
-    .then(record => {
       // Each record will now be an instance of MarkSheet
-      // console.log(record);
-      res.send(record);
-    });
-});
-
-users.post("/subject", (req, res) => {
-  db.sequelize
-    .query("SELECT * FROM `subjects`", {
-      raw: true,
-      hierarchy: true,
-      model: Marks,
-      mapToModel: true
-      // pass true here if you have any mapped fields
-    })
-    .then(record => {
-      // Each record will now be an instance of MarkSheet
+      //console.log("In Sequelize query");
+      //console.log(record);
       res.send(record);
     });
 });
