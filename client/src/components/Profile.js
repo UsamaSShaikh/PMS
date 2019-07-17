@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import jwt_decode from "jwt-decode";
+import { Nav, Tab, Col, Row, Table, Image } from "react-bootstrap";
 
 class Profile extends Component {
   state = {
@@ -33,7 +34,7 @@ class Profile extends Component {
     const decoded = jwt_decode(token);
     const user = decoded.student_id;
 
-    console.log("Profile : " + user);
+    console.log(decoded);
     this.setState({
       student_id: decoded.student_id,
       firstName: decoded.firstName,
@@ -46,41 +47,85 @@ class Profile extends Component {
 
   render() {
     return (
-      <div className="profile-cnt mt-5">
-        <div className="row">
-          <div className="col-md-12">
-            <h1 className="mb-5">PROFILE</h1>
-          </div>
-          <div className="col-sm-3 text-left">
-            <img src="https://dummyimage.com/150x150/ccc/fff" alt="dummy" />
-          </div>
-          <div className="col-md-9">
-            <table className="table mx-auto">
-              <tbody>
-                <tr>
-                  <td>First Name</td>
-                  <td>{this.state.firstName}</td>
-                </tr>
-                <tr>
-                  <td>Last Name</td>
-                  <td>{this.state.lastName}</td>
-                </tr>
-                <tr>
-                  <td>Email</td>
-                  <td>{this.state.email}</td>
-                </tr>
-                <tr>
-                  <td colSpan="2">
-                    <Link className="btn btn-primary" to="/details">
-                      Show Details
-                    </Link>
-                  </td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
-      </div>
+      <>
+        <Tab.Container id="profile-page-cnt" defaultActiveKey="profile">
+          <Row className="mt-5">
+            <Col sm={2}>
+              <Nav variant="pills" className="flex-column">
+                <Nav.Item className="ml-3">
+                  <Nav.Link eventKey="profile">
+                    <i className="mr-2 fa fa-user" />
+                    Profile
+                  </Nav.Link>
+                </Nav.Item>
+                <Nav.Item className="ml-3">
+                  <Nav.Link eventKey="academic">
+                    <i className="mr-2 fa fa-university" />
+                    Academic
+                  </Nav.Link>
+                </Nav.Item>
+                <Nav.Item className="ml-3">
+                  <Nav.Link eventKey="syllabus">
+                    <i className="mr-2 fa fa-book" />
+                    Syllabus
+                  </Nav.Link>
+                </Nav.Item>
+              </Nav>
+            </Col>
+            <Col sm={10} className="profile-cnt">
+              <Tab.Content>
+                <Tab.Pane eventKey="profile">
+                  <Row>
+                    <Col sm={2}>
+                      <Image
+                        src="https://dummyimage.com/150x150/000/fff"
+                        rounded
+                      />
+                    </Col>
+                    <Col sm={10}>
+                      <Table striped hover>
+                        <thead>
+                          <tr>
+                            <th>First Name</th>
+                            <th>Last Name</th>
+                            <th>Email</th>
+                            {/* <th>D.O.B</th>
+                            <th>Qualification</th>
+                            <th>Contact Number</th>
+                            <th>Father Name</th>
+                            <th>Mother Name</th>
+                            <th>Occupation</th> */}
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr>
+                            <td>{this.state.firstName}</td>
+                            <td>{this.state.lastName}</td>
+                            <td>{this.state.email}</td>
+                          </tr>
+                        </tbody>
+                      </Table>
+                    </Col>
+                  </Row>
+                  <Row className="mt-3">
+                    <Col sm={12}>
+                      <Link className="btn btn-primary" to="/details">
+                        Show Details
+                      </Link>
+                    </Col>
+                  </Row>
+                </Tab.Pane>
+                <Tab.Pane eventKey="academic">
+                  <h1>academic Test</h1>
+                </Tab.Pane>
+                <Tab.Pane eventKey="syllabus">
+                  <h1>syllabus Test</h1>
+                </Tab.Pane>
+              </Tab.Content>
+            </Col>
+          </Row>
+        </Tab.Container>
+      </>
     );
   }
 }

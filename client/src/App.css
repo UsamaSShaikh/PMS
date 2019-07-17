@@ -18,18 +18,18 @@
   color: #61dafb;
 }
 body {
+  height: 100vh;
   background: #9053c7;
   background: -webkit-linear-gradient(-135deg, #c850c0, #4158d0);
   background: -o-linear-gradient(-135deg, #c850c0, #4158d0);
   background: -moz-linear-gradient(-135deg, #c850c0, #4158d0);
   background: linear-gradient(-135deg, #c850c0, #4158d0);
-  height: 100vh;
 }
 .login-overlay {
   top: 0;
   left: 0;
   width: 100%;
-  height: 100vh;
+  height: calc(100vh - 50px);
   display: flex;
   justify-content: center;
   align-items: center;
@@ -112,19 +112,25 @@ body {
   border-radius: 0;
   padding: 5px 10px;
 }
-#loginTabs.nav-tabs {
+#loginTabs {
   border: none;
+  margin-bottom: 20px;
+}
+#loginTabs .nav-item {
+  flex: auto;
 }
 #loginTabs .nav-link {
   color: #9d9da8;
   border-radius: 0.2rem;
-  margin-bottom: 10px;
-  border: solid 2px #e5e5e9;
-  padding: 20px;
+  border: solid 2px transparent;
+  padding: 10px 15px;
+  box-sizing: border-box;
 }
 #loginTabs .nav-link.active {
   color: #54bb01;
   border: solid 2px #54bb01;
+  background: none;
+  /* border-radius: 0; */
 }
 .logo-cnt {
   text-align: center;
@@ -153,6 +159,11 @@ body {
   padding: 20px;
   border-radius: 10px;
 }
+
+.profile-cnt {
+  margin-left: -15px;
+  min-height: 50vh;
+}
 .profile-details-cnt h1 {
   border-bottom: solid 1px #ccc;
   padding: 0 30px 15px;
@@ -172,8 +183,33 @@ body {
 .kp-navbar .navbar-nav .nav-item:last-child .nav-link {
   border-right: none;
 }
-.kp-navbar .navbar-nav .nav-link:hover {
-  background: rgba(0, 0, 0, 0.6);
+.kp-navbar .navbar-nav .nav-link:hover,
+.kp-navbar .navbar-nav .nav-item.active {
+  /* background: rgba(0, 0, 0, 1); */
+  background: #007bff;
+}
+
+.nav.nav-pills {
+  margin-top: 20px;
+}
+.nav-pills .nav-link.active,
+.nav-pills .show > .nav-link {
+  border-radius: 3px 0 0 3px;
+  color: #000;
+  background: -webkit-gradient(
+    linear,
+    left top,
+    right top,
+    from(#ffaf00),
+    to(#ebef00)
+  );
+  background: linear-gradient(90deg, #ffaf00 0%, #ebef00 100%);
+  box-shadow: 0px 3px 6px rgba(0, 0, 0, 0.2);
+}
+.nav-pills .nav-link {
+  color: rgba(255, 255, 255, 0.6);
+
+  margin: 5px 0;
 }
 
 @keyframes App-logo-spin {

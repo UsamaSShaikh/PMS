@@ -2,9 +2,9 @@ import React, { Component } from "react";
 import jwt_decode from "jwt-decode";
 import {
   getStudentAcamedics,
-  getStudentMarks,
-  getMarks,
-  getSubject
+  getStudentMarks
+  // getMarks,
+  // getSubject
 } from "./UserFunctions";
 
 export class Profiledetails extends Component {
@@ -36,14 +36,14 @@ export class Profiledetails extends Component {
     const decoded = jwt_decode(token);
     const user = decoded.student_id;
 
-    getSubject().then(res => {
-      let subjcets = res.data;
-      this.setState({
-        subjects: [{ subjectid: "", subjectname: "Select Subject" }].concat(
-          subjcets
-        )
-      });
-    });
+    // getSubject().then(res => {
+    //   let subjcets = res.data;
+    //   this.setState({
+    //     subjects: [{ subjectid: "", subjectname: "Select Subject" }].concat(
+    //       subjcets
+    //     )
+    //   });
+    // });
 
     this.setState({
       student_id: decoded.student_id,
@@ -121,20 +121,20 @@ export class Profiledetails extends Component {
     };
     event.preventDefault();
 
-    getMarks(user)
-      .then(res => {
-        // let dataKeys = Object.keys(res.data[0]);
-        console.log(res.data);
-        // let dataKeys = res.data[0];
-        let academicData = res.data;
-        this.setState({
-          academicData: academicData,
-          showTable: true
-        });
-      })
-      .catch(err => {
-        console.log(err);
-      });
+    // getMarks(user)
+    //   .then(res => {
+    //     // let dataKeys = Object.keys(res.data[0]);
+    //     console.log(res.data);
+    //     // let dataKeys = res.data[0];
+    //     let academicData = res.data;
+    //     this.setState({
+    //       academicData: academicData,
+    //       showTable: true
+    //     });
+    //   })
+    //   .catch(err => {
+    //     console.log(err);
+    //   });
   };
 
   render() {

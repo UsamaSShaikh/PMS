@@ -11,12 +11,22 @@ class Navbar extends Component {
   render() {
     const loginRegLink = (
       <ul className="navbar-nav">
-        {/* <li className="nav-item">
+        <li
+          className={
+            "nav-item " +
+            (this.props.location.pathname === "/login" ? "active" : "")
+          }
+        >
           <Link to="/login" className="nav-link">
-            Login
+            Sign In
           </Link>
-        </li> */}
-        <li className="nav-item">
+        </li>
+        <li
+          className={
+            "nav-item " +
+            (this.props.location.pathname === "/register" ? "active" : "")
+          }
+        >
           <Link to="/register" className="nav-link">
             Register
           </Link>
@@ -38,12 +48,7 @@ class Navbar extends Component {
       </ul>
     );
     return (
-      <nav
-        className={
-          "navbar navbar-expand-lg kp-navbar" +
-          (this.props.location.pathname === "/" ? " d-none" : " d-flex")
-        }
-      >
+      <nav className="navbar navbar-expand-lg kp-navbar">
         <button
           className="navbar-toggler"
           type="button"

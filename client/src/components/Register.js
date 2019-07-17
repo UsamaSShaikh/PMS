@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { register } from "./UserFunctions";
+import { Nav, Tab } from "react-bootstrap";
 
 class Register extends Component {
   constructor() {
@@ -42,47 +43,116 @@ class Register extends Component {
 
   render() {
     return (
-      <div className="container">
-        <div className="row">
-          <div className="col-md-6 mt-5 mx-auto">
-            <form noValidate onSubmit={this.onSubmit}>
-              <h1 className="h3 mb-3 font-weight-normal">
-                Please Enter Details
-              </h1>
-              <div className="form-group">
-                <label htmlFor="student_id">Student ID</label>
-                <input
-                  type="text"
-                  className="form-control"
-                  name="student_id"
-                  placeholder="Enter Student ID"
-                  value={this.state.student_id}
-                  onChange={this.onChange}
+      <>
+        <div className="login-overlay">
+          <div className="login-cnt">
+            <div className="col-sm-4 left-cnt">
+              <div className="logo-cnt">
+                <img
+                  src="../images/logo-icon.jpg"
+                  alt="logo"
+                  className="login-img"
                 />
+                <h5>Knowledge Part Charitable Trust</h5>
+              </div>
+            </div>
+            <div className="col-sm-8 right-cnt">
+              <div className="title">Register</div>
+              <div className="row">
+                <div className="col-md-12 selc-role">
+                  Please select your role
+                </div>
               </div>
 
-              <div className="form-group">
-                <label htmlFor="password">Password</label>
-                <input
-                  type="password"
-                  className="form-control"
-                  name="password"
-                  placeholder="Enter Password"
-                  value={this.state.password}
-                  onChange={this.onChange}
-                />
-              </div>
-              {this.state.error ? <label>{this.state.error}</label> : <label />}
-              <button
-                type="submit"
-                className="btn btn-lg btn-primary btn-block"
-              >
-                Register
-              </button>
-            </form>
+              <Tab.Container id="left-tabs-example" defaultActiveKey="SignIn">
+                <Nav variant="pills" id="loginTabs" className="row">
+                  <Nav.Item>
+                    <Nav.Link eventKey="SignIn">
+                      <div className="box">
+                        <i className="fas fa-user-graduate fa-2x" />
+                        <div className="box-title">Student</div>
+                      </div>
+                    </Nav.Link>
+                  </Nav.Item>
+                  <Nav.Item>
+                    <Nav.Link eventKey="faculty">
+                      <div className="box">
+                        <i className="fas fa-chalkboard-teacher fa-2x" />
+                        <div className="box-title">Faculty</div>
+                      </div>
+                    </Nav.Link>
+                  </Nav.Item>
+                  <Nav.Item>
+                    <Nav.Link eventKey="parent">
+                      <div className="box">
+                        <i className="fas fa-users fa-2x" />
+                        <div className="box-title">Parent</div>
+                      </div>
+                    </Nav.Link>
+                  </Nav.Item>
+                  <Nav.Item>
+                    <Nav.Link eventKey="admin">
+                      <div className="box">
+                        <i className="fas fa-user fa-2x" />
+                        <div className="box-title">Admin</div>
+                      </div>
+                    </Nav.Link>
+                  </Nav.Item>
+                </Nav>
+                <Tab.Content>
+                  <Tab.Pane eventKey="SignIn">
+                    <form noValidate onSubmit={this.onSubmit}>
+                      <div className="form-group">
+                        <label htmlFor="student_id">Student ID</label>
+                        <input
+                          type="text"
+                          className="form-control"
+                          name="student_id"
+                          placeholder="Enter Student ID"
+                          value={this.state.student_id}
+                          onChange={this.onChange}
+                        />
+                      </div>
+
+                      <div className="form-group">
+                        <label htmlFor="password">Password</label>
+                        <input
+                          type="password"
+                          className="form-control"
+                          name="password"
+                          placeholder="Enter Password"
+                          value={this.state.password}
+                          onChange={this.onChange}
+                        />
+                      </div>
+                      {this.state.error ? (
+                        <label>{this.state.error}</label>
+                      ) : (
+                        <label />
+                      )}
+                      <button
+                        type="submit"
+                        className="btn btn-lg btn-primary btn-block"
+                      >
+                        Register
+                      </button>
+                    </form>
+                  </Tab.Pane>
+                  <Tab.Pane eventKey="faculty">
+                    <h1>Faculty Test</h1>
+                  </Tab.Pane>
+                  <Tab.Pane eventKey="parent">
+                    <h1>parent Test</h1>
+                  </Tab.Pane>
+                  <Tab.Pane eventKey="admin">
+                    <h1>admin Test</h1>
+                  </Tab.Pane>
+                </Tab.Content>
+              </Tab.Container>
+            </div>
           </div>
         </div>
-      </div>
+      </>
     );
   }
 }

@@ -68,7 +68,12 @@ users.post("/login", (req, res) => {
     firstName: "",
     lastName: "",
     email: "",
-    password: req.body.password
+    password: req.body.password,
+    dob: "",
+    qualification: "",
+    contact: "",
+    fatherName: "",
+    motherName: ""
   };
   Student.findOne({
     where: {
@@ -81,6 +86,11 @@ users.post("/login", (req, res) => {
         userData.firstName = user.firstName;
         userData.lastName = user.lastName;
         userData.email = user.email;
+        userData.dob = user.dob;
+        userData.qualification = user.qualification;
+        userData.contact = user.contact;
+        userData.fatherName = user.fatherName;
+        userData.motherName = user.motherName;
 
         if (bcrypt.compareSync(req.body.password, user.password)) {
           let token = jwt.sign(userData, process.env.SECRET_KEY, {
