@@ -65,7 +65,7 @@ class Register extends Component {
               </div>
 
               <Tab.Container id="left-tabs-example" defaultActiveKey="SignIn">
-                <Nav variant="pills" id="loginTabs" className="row">
+                <Nav variant="pills" id="loginTabs">
                   <Nav.Item>
                     <Nav.Link eventKey="SignIn">
                       <div className="box">

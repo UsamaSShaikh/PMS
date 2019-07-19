@@ -125,6 +125,7 @@ body {
   border: solid 2px transparent;
   padding: 10px 15px;
   box-sizing: border-box;
+  margin: 0;
 }
 #loginTabs .nav-link.active {
   color: #54bb01;
