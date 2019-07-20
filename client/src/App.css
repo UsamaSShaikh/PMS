@@ -189,6 +189,9 @@ body {
   /* background: rgba(0, 0, 0, 1); */
   background: #007bff;
 }
+.table-cnt {
+  overflow: auto;
+}
 
 .nav.nav-pills {
   margin-top: 20px;

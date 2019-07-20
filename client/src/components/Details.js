@@ -105,36 +105,49 @@ export class Profiledetails extends Component {
 
     if (this.refs.academicYear.value === "") {
       this.setState({ isDisabled: true });
-    } else if (this.refs.subjects.value === "") {
-      this.setState({ isDisabled: true });
-    } else {
+    }
+    // else if (this.refs.subjects.value === "") {
+    //   this.setState({ isDisabled: true });
+    // }
+    else {
       this.setState({ isDisabled: false });
     }
   };
 
   onSubmit = event => {
-    let { student_id, year, subject } = this.state;
+    let { student_id, year } = this.state;
     const user = {
       student_id: student_id,
-      year: year,
-      subject: subject
+      year: year
     };
     event.preventDefault();
+  };
 
-    // getMarks(user)
-    //   .then(res => {
-    //     // let dataKeys = Object.keys(res.data[0]);
-    //     console.log(res.data);
-    //     // let dataKeys = res.data[0];
-    //     let academicData = res.data;
-    //     this.setState({
-    //       academicData: academicData,
-    //       showTable: true
-    //     });
-    //   })
-    //   .catch(err => {
-    //     console.log(err);
-    //   });
+  showResult = () => {
+    console.log(this.refs.academicYear.value);
+    if (this.refs.academicYear.value !== "") {
+      this.setState({ showTable: true });
+    }
+    const user2 = {
+      student_id: this.state.student_id,
+      academics: this.refs.academicYear.value
+    };
+    console.log(user2);
+    getStudentMarks(user2)
+      .then(res => {
+        if (res.status === 200) {
+          console.log("Marksheet Data Found!");
+          console.log(res.data);
+          this.setState({ academicData: res.data });
+        } else {
+          if (res.status === 400) {
+            console.log("Error in marksheet");
+          }
+        }
+      })
+      .catch(err => {
+        console.log(err);
+      });
   };
 
   render() {
@@ -175,7 +188,7 @@ export class Profiledetails extends Component {
       <>
         <div className="profile-details-cnt mt-5">
           <h1 className="mb-5 mt-0">Student Details</h1>
-          <form onSubmit={this.onSubmit}>
+          <form onSubmit={this.showResult}>
             <div className="row">
               <div className="col-md-12">
                 <div className="row">
@@ -200,7 +213,7 @@ export class Profiledetails extends Component {
                       </div>
                     </div>
                   </div>
-                  <div className="col-md-5 mb-3">
+                  {/* <div className="col-md-5 mb-3">
                     <div className="row">
                       <label className="control-label col-sm-4">
                         <strong>Select Subject:</strong>{" "}
@@ -223,7 +236,7 @@ export class Profiledetails extends Component {
                         </select>
                       </div>
                     </div>
-                  </div>
+                  </div> */}
                   <div className="col-md-2 mb-3">
                     <input
                       disabled={this.state.isDisabled}
@@ -243,7 +256,7 @@ export class Profiledetails extends Component {
               (this.state.showTable ? "d-block" : "d-none")
             }
           >
-            <thead className="thead-dark">
+            <thead>
               <tr>
                 <th>Subject</th>
                 <th>Exam</th>

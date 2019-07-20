@@ -1,7 +1,8 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import jwt_decode from "jwt-decode";
-import { Nav, Tab, Col, Row, Table, Image } from "react-bootstrap";
+import { getStudentAcamedics, getStudentMarks } from "./UserFunctions";
+import { Nav, Tab, Col, Tabs, Row, Table, Image } from "react-bootstrap";
 
 class Profile extends Component {
   state = {
@@ -11,6 +12,7 @@ class Profile extends Component {
     email: "",
     academics: [],
     selectedYear: "",
+    showTable: false,
     academicData: [],
     root: {
       width: "100%",
@@ -34,18 +36,80 @@ class Profile extends Component {
     const decoded = jwt_decode(token);
     const user = decoded.student_id;
 
-    console.log(decoded);
     this.setState({
       student_id: decoded.student_id,
       firstName: decoded.firstName,
       lastName: decoded.lastName,
       email: decoded.email
     });
+
+    getStudentAcamedics(user)
+      .then(res => {
+        if (res.status === 200) {
+          let teamsFromApi = res.data.map(team => {
+            return { value: team.academicyear, display: team.academicyear };
+          });
+          this.setState({
+            academics: [{ value: "", display: "Select academic year" }].concat(
+              teamsFromApi
+            )
+          });
+        } else if (res.status === 400) {
+          console.log("Error in academic details");
+        }
+      })
+      .catch(err => {
+        console.log(err);
+      });
   }
 
-  showResult() {}
+  showResult = event => {
+    event.preventDefault();
+    console.log(this.refs.academicYear.value);
+    if (this.refs.academicYear.value !== "") {
+      this.setState({ showTable: true });
+    }
+    const user2 = {
+      student_id: this.state.student_id,
+      academics: this.refs.academicYear.value
+    };
+    console.log(user2);
+    getStudentMarks(user2)
+      .then(res => {
+        if (res.status === 200) {
+          console.log("Marksheet Data Found!");
+          console.log(res.data);
+          this.setState({ academicData: res.data, showTable: true });
+        } else {
+          if (res.status === 400) {
+            console.log("Error in marksheet");
+          }
+        }
+      })
+      .catch(err => {
+        console.log(err);
+      });
+  };
 
   render() {
+    let tableRow = this.state.academicData.map((item, index) => {
+      return (
+        <tr key={index}>
+          <td>{item.studentid}</td>
+          <td>{item.examname}</td>
+          <td align="center">{item.History}</td>
+          <td align="center">{item.Geography}</td>
+          <td align="center">{item.Politics}</td>
+          <td align="center">{item.Economics}</td>
+          <td align="center">{item.Current}</td>
+          <td align="center">{item.Technology}</td>
+          <td align="center">{item.Ethics}</td>
+          <td align="center">{item.CSAT}</td>
+          <td align="center">{item.English}</td>
+          <td align="center">{item.ModLang}</td>
+        </tr>
+      );
+    });
     return (
       <>
         <Tab.Container id="profile-page-cnt" defaultActiveKey="profile">
@@ -107,16 +171,68 @@ class Profile extends Component {
                       </Table>
                     </Col>
                   </Row>
-                  <Row className="mt-3">
-                    <Col sm={12}>
-                      <Link className="btn btn-primary" to="/details">
-                        Show Details
-                      </Link>
-                    </Col>
-                  </Row>
                 </Tab.Pane>
                 <Tab.Pane eventKey="academic">
-                  <h1>academic Test</h1>
+                  <Tabs defaultActiveKey="year" id="noanim-tab-example">
+                    <Tab eventKey="year" title="Year Wise">
+                      <form onSubmit={this.showResult} className="mt-4">
+                        <div className="row">
+                          <label className="col-sm-2">
+                            <strong>Academics:</strong>{" "}
+                          </label>
+                          <div className="col-sm-4">
+                            <select
+                              ref="academicYear"
+                              onChange={this.toggleDetails}
+                              name="year"
+                              className="custom-select"
+                            >
+                              {this.state.academics.map(team => (
+                                <option key={team.value} value={team.value}>
+                                  {team.display}
+                                </option>
+                              ))}
+                            </select>
+                          </div>
+                          <div className="col-md-3 mb-3">
+                            <input
+                              disabled={this.state.isDisabled}
+                              className="btn btn-md btn-block btn-primary details-btn"
+                              value="Show Result"
+                              type="submit"
+                            />
+                          </div>
+                        </div>
+                      </form>
+                      <div className="table-cnt">
+                        <table
+                          className={
+                            "table profile-detail striped bordered " +
+                            (this.state.showTable ? "d-table" : "d-none")
+                          }
+                        >
+                          <tr>
+                            <th>Student Id</th>
+                            <th>Exam</th>
+                            <th>History</th>
+                            <th>Geography</th>
+                            <th>Politics</th>
+                            <th>Economics</th>
+                            <th>Current</th>
+                            <th>Technology</th>
+                            <th>Ethics</th>
+                            <th>CSAT</th>
+                            <th>English</th>
+                            <th>ModLang</th>
+                          </tr>
+                          {tableRow}
+                        </table>
+                      </div>
+                    </Tab>
+                    <Tab eventKey="chapter" title="Chapter Wise">
+                      <h1>By chapter result</h1>
+                    </Tab>
+                  </Tabs>
                 </Tab.Pane>
                 <Tab.Pane eventKey="syllabus">
                   <h1>syllabus Test</h1>
