@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { login } from "./UserFunctions";
+import { loginUser, loginAdmin } from "./UserFunctions";
 import { Nav, Tab } from "react-bootstrap";
 
 class Login extends Component {
@@ -7,28 +7,54 @@ class Login extends Component {
     super();
     this.state = {
       student_id: "",
-      password: "",
+      student_password: "",
+      admin_id: "",
+      admin_password: "",
       error: ""
     };
     this.onChange = this.onChange.bind(this);
-    this.onSubmit = this.onSubmit.bind(this);
+    this.onSubmitUser = this.onSubmitUser.bind(this);
+    this.onSubmitAdmin = this.onSubmitAdmin.bind(this);
   }
 
   onChange(e) {
     this.setState({ [e.target.name]: e.target.value });
   }
 
-  onSubmit(e) {
+  onSubmitUser(e) {
     e.preventDefault();
     const user = {
       student_id: this.state.student_id,
-      password: this.state.password
+      student_password: this.state.student_password
     };
-    login(user)
+    loginUser(user)
       .then(res => {
         console.log(res);
         if (res.status === 200) {
           this.props.history.push("profile");
+        } else {
+          if (res.status === 400) {
+            console.log("Login Error");
+            this.setState({ error: res.data.message });
+          }
+        }
+      })
+      .catch(err => {
+        console.log(err);
+      });
+  }
+
+  onSubmitAdmin(e) {
+    e.preventDefault();
+    const admin = {
+      admin_id: this.state.admin_id,
+      admin_password: this.state.admin_password
+    };
+    loginAdmin(admin)
+      .then(res => {
+        console.log(res);
+        if (res.status === 200) {
+          this.props.history.push("admin");
         } else {
           if (res.status === 400) {
             console.log("Login Error");
@@ -98,7 +124,7 @@ class Login extends Component {
               </Nav>
               <Tab.Content>
                 <Tab.Pane eventKey="SignIn">
-                  <form noValidate onSubmit={this.onSubmit}>
+                  <form noValidate onSubmit={this.onSubmitUser}>
                     <div className="form-group">
                       <label htmlFor="student_id">Student ID</label>
                       <input
@@ -111,13 +137,13 @@ class Login extends Component {
                       />
                     </div>
                     <div className="form-group">
-                      <label htmlFor="password">Password</label>
+                      <label htmlFor="student_password">Password</label>
                       <input
                         type="password"
                         className="form-control"
-                        name="password"
+                        name="student_password"
                         placeholder="Enter Password"
-                        value={this.state.password}
+                        value={this.state.student_password}
                         onChange={this.onChange}
                       />
                     </div>
@@ -137,7 +163,37 @@ class Login extends Component {
                   <h1>parent</h1>
                 </Tab.Pane>
                 <Tab.Pane eventKey="admin">
-                  <h1>admin</h1>
+                  <form noValidate onSubmit={this.onSubmitAdmin}>
+                    <div className="form-group">
+                      <label htmlFor="admin_id">Admin ID</label>
+                      <input
+                        type="text"
+                        className="form-control"
+                        name="admin_id"
+                        placeholder="Enter Admin ID"
+                        value={this.state.admin_id}
+                        onChange={this.onChange}
+                      />
+                    </div>
+                    <div className="form-group">
+                      <label htmlFor="admin_password">Password</label>
+                      <input
+                        type="password"
+                        className="form-control"
+                        name="admin_password"
+                        placeholder="Enter Password"
+                        value={this.state.admin_password}
+                        onChange={this.onChange}
+                      />
+                    </div>
+                    {this.state.error ? <label>{this.state.error}</label> : ""}
+                    <button
+                      type="submit"
+                      className="btn btn-lg btn-primary btn-block mt-3 login-btn"
+                    >
+                      Sign In
+                    </button>
+                  </form>
                 </Tab.Pane>
               </Tab.Content>
             </Tab.Container>

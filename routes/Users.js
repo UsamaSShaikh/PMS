@@ -8,6 +8,7 @@ const db = require("../database/db");
 const Sequelize = require("sequelize");
 
 const Student = require("../models/User");
+const Admin = require("../models/Admin");
 const Academics = require("../models/Academics");
 const MarkSheet = require("../models/MarkSheet");
 const Exams = require("../models/Exams");
@@ -61,19 +62,14 @@ users.post("/register", (req, res) => {
     });
 });
 
-users.post("/login", (req, res) => {
-  //console.log(req.body);
+users.post("/loginUser", (req, res) => {
+  console.log(req.body);
   const userData = {
     student_id: "",
     firstName: "",
     lastName: "",
     email: "",
-    password: req.body.password,
-    dob: "",
-    qualification: "",
-    contact: "",
-    fatherName: "",
-    motherName: ""
+    password: req.body.student_password
   };
   Student.findOne({
     where: {
@@ -91,14 +87,14 @@ users.post("/login", (req, res) => {
         userData.contact = user.contact;
         userData.fatherName = user.fatherName;
         userData.motherName = user.motherName;
-
-        if (bcrypt.compareSync(req.body.password, user.password)) {
+        console.log("Valid Password");
+        if (bcrypt.compareSync(req.body.student_password, user.password)) {
           let token = jwt.sign(userData, process.env.SECRET_KEY, {
             expiresIn: 1440
           });
           res.send(token);
         } else {
-          //console.log("Invalid Password");
+          console.log("Invalid Password");
           //res.status(400).json({ error: "Invalid Password" });
           //res.status(400);
           //res.send("Invalid Password");
@@ -109,7 +105,7 @@ users.post("/login", (req, res) => {
           });
         }
       } else {
-        //console.log("Student does not exist");
+        console.log("Student does not exist");
         //res.status(400).json({ error: "Student does not exist" });
         res.status(400).send({
           status: 400,
@@ -119,7 +115,60 @@ users.post("/login", (req, res) => {
       }
     })
     .catch(err => {
-      //console.log("Us is here 3");
+      console.log("Us is here 3");
+      res.status(400).json({ error: err });
+    });
+});
+
+users.post("/loginAdmin", (req, res) => {
+  console.log(req.body);
+  const adminData = {
+    admin_id: "",
+    firstName: "",
+    lastName: "",
+    password: req.body.admin_password
+  };
+  Admin.findOne({
+    where: {
+      id: req.body.admin_id
+    }
+  })
+    .then(user => {
+      if (user) {
+        adminData.id = user.id;
+        adminData.first_Name = user.first_Name;
+        adminData.last_Name = user.last_Name;
+        adminData.email = user.email;
+        adminData.contact = user.contact;
+
+        //if (bcrypt.compareSync(req.body.admin_password, user.password)) {
+        if (
+          req.body.admin_password.toUpperCase() === user.password.toUpperCase()
+        ) {
+          console.log("Admin Password Valid!");
+          let token = jwt.sign(adminData, process.env.SECRET_KEY, {
+            expiresIn: 1440
+          });
+          res.send(token);
+        } else {
+          console.log("Invalid Admin Password");
+          res.status(400).send({
+            status: 400,
+            message: "Invalid Admin Password",
+            type: "internal"
+          });
+        }
+      } else {
+        console.log("Admin does not exist");
+        res.status(400).send({
+          status: 400,
+          message: "Admin does not exist",
+          type: "internal"
+        });
+      }
+    })
+    .catch(err => {
+      console.log("Us is here 3");
       res.status(400).json({ error: err });
     });
 });

@@ -2,20 +2,26 @@ const Sequelize = require("sequelize");
 const db = require("../database/db");
 
 module.exports = db.sequelize.define(
-  "academics",
+  "admindetails",
   {
-    srno: {
+    id: {
       type: Sequelize.INTEGER,
       primaryKey: true,
       autoIncrement: true
     },
-    academicyear: {
+    first_Name: {
       type: Sequelize.STRING
     },
-    studentid: {
+    last_Name: {
       type: Sequelize.INTEGER
     },
-    standard: {
+    email: {
+      type: Sequelize.STRING
+    },
+    contact: {
+      type: Sequelize.INTEGER
+    },
+    password: {
       type: Sequelize.STRING
     }
   },

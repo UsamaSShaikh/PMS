@@ -8,6 +8,7 @@ import Navbar from "./components/Navbar";
 import Login from "./components/Login";
 import Register from "./components/Register";
 import Profile from "./components/Profile";
+import Admin from "./components/Admin";
 
 class App extends Component {
   render() {
@@ -19,6 +20,7 @@ class App extends Component {
           <div className="container">
             <Route exact path="/register" component={Register} />
             <Route exact path="/login" component={Login} />
+            <Route exact path="/admin" component={Admin} />
             <Route exact path="/profile" component={Profile} />
             <Route exact path="/details" component={Details} />
           </div>
