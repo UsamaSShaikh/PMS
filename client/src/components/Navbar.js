@@ -1,7 +1,8 @@
 import React, { Component } from "react";
 import { Link, withRouter } from "react-router-dom";
+import { Navbar, Nav, Image } from "react-bootstrap";
 
-class Navbar extends Component {
+class NavBar extends Component {
   logOut(e) {
     e.preventDefault();
     localStorage.removeItem("usertoken");
@@ -10,66 +11,64 @@ class Navbar extends Component {
 
   render() {
     const loginRegLink = (
-      <ul className="navbar-nav">
-        <li
+      <>
+        <Nav.Link
+          href="/login"
           className={
             "nav-item " +
             (this.props.location.pathname === "/login" ? "active" : "")
           }
         >
-          <Link to="/login" className="nav-link">
-            Sign In
-          </Link>
-        </li>
-        <li
+          Sign In
+        </Nav.Link>
+        <Nav.Link
+          href="/register"
           className={
             "nav-item " +
             (this.props.location.pathname === "/register" ? "active" : "")
           }
         >
-          <Link to="/register" className="nav-link">
-            Register
-          </Link>
-        </li>
-      </ul>
+          Register
+        </Nav.Link>
+      </>
     );
     const userLink = (
-      <ul className="nav navbar-nav navbar-right">
-        <li className="nav-item">
-          <Link to="/profile" className="nav-link">
-            User
-          </Link>
-        </li>
-        <li className="nav-item">
-          <a href="/" onClick={this.logOut.bind(this)} className="nav-link">
-            Logout
-          </a>
-        </li>
-      </ul>
+      <>
+        <Nav.Link href="/profile">User</Nav.Link>
+        <Nav.Link href="/" onClick={this.logOut.bind(this)}>
+          Logout
+        </Nav.Link>
+      </>
     );
     return (
-      <nav className="navbar navbar-expand-lg kp-navbar">
-        <button
-          className="navbar-toggler"
-          type="button"
-          data-toggle="collapse"
-          data-target="#navbar1"
-          aria-controls="navbar1"
-          aria-expanded="false"
-          aria-label="Toggle navigation"
-        >
-          <span className="navbar-toggle-icon" />
-        </button>
-
-        <div
-          className="collapse navbar-collapse justify-content-md-center"
-          id="navbar1"
-        >
-          {localStorage.usertoken ? userLink : loginRegLink}
-        </div>
-      </nav>
+      <>
+        <Navbar bg="dark" variant="dark" className="kp-navbar">
+          <Navbar.Brand href="#home">
+            <Image
+              src="../images/logo-icon.jpg"
+              rounded
+              alt="logo"
+              className={
+                "innerLogo " +
+                (this.props.location.pathname === "/register"
+                  ? "d-none"
+                  : this.props.location.pathname === "/login"
+                  ? "d-none"
+                  : "d-inline")
+              }
+            />
+            KPTurst - Performance Management
+          </Navbar.Brand>
+          <Nav className="ml-auto">
+            {/* <Nav.Link href="#home">Home</Nav.Link>
+            <Nav.Link href="#features">Features</Nav.Link>
+            <Nav.Link href="#pricing">Pricing</Nav.Link> */}
+            {localStorage.usertoken ? userLink : loginRegLink}
+          </Nav>
+        </Navbar>
+      </>
     );
   }
 }
 
-export default withRouter(Navbar);
+export default withRouter(NavBar);

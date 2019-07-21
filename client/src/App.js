@@ -3,7 +3,7 @@ import { BrowserRouter as Router, Route } from "react-router-dom";
 import Details from "./components/Details";
 import "./App.css";
 
-import Navbar from "./components/Navbar";
+import NavBar from "./components/Navbar";
 // import Landing from "./components/Landing";
 import Login from "./components/Login";
 import Register from "./components/Register";
@@ -15,7 +15,7 @@ class App extends Component {
     return (
       <Router>
         <div className="App">
-          <Navbar />
+          <NavBar />
           <Route exact path="/" component={Login} />
           <div className="container-fluid">
             <Route exact path="/register" component={Register} />
