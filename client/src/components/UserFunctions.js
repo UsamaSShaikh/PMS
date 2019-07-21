@@ -90,6 +90,21 @@ export const getStudentAcamedics = student_id => {
     });
 };
 
+export const getStudentSubjects = () => {
+  console.log("getStudentSubjects : ");
+  return axios
+    .post("users/studentSubjects")
+    .then(res => {
+      console.log("User Functions Academics");
+      console.log(res);
+      return res;
+    })
+    .catch(err => {
+      console.log("User Functions");
+      console.log(err);
+    });
+};
+
 export const getStudentMarks = user => {
   console.log("getStudentMarks : ");
   console.log(user);
@@ -109,14 +124,14 @@ export const getStudentMarks = user => {
     });
 };
 
-export const getMarks = user => {
+export const getSubjectMarks = user => {
   return axios
     .post(
-      "users/marks",
+      "users/subjectMarks",
       {
         student_id: user.student_id,
-        year: user.year,
-        subject: user.subject
+        academicYear: user.academics,
+        subjectid: user.subject
       },
       {
         headers: {

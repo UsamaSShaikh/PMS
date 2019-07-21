@@ -1,7 +1,12 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import jwt_decode from "jwt-decode";
-import { getStudentAcamedics, getStudentMarks } from "./UserFunctions";
+import {
+  getStudentAcamedics,
+  getStudentSubjects,
+  getStudentMarks,
+  getSubjectMarks
+} from "./UserFunctions";
 import { Nav, Tab, Col, Tabs, Row, Table, Image } from "react-bootstrap";
 
 class Profile extends Component {
@@ -10,10 +15,11 @@ class Profile extends Component {
     firstName: "",
     lastName: "",
     email: "",
-    academics: [],
-    selectedYear: "",
+    academicsYearsList: [],
     showTable: false,
     academicData: [],
+    subjectData: [],
+    subjectsList: [],
     root: {
       width: "100%",
       overflowX: "auto"
@@ -50,15 +56,39 @@ class Profile extends Component {
             return { value: team.academicyear, display: team.academicyear };
           });
           this.setState({
-            academics: [{ value: "", display: "Select academic year" }].concat(
-              teamsFromApi
-            )
+            academicsYearsList: [
+              { value: "", display: "Select academic year" }
+            ].concat(teamsFromApi)
           });
+          console.log(this.state.academicsYearsList);
         } else if (res.status === 400) {
           console.log("Error in academic details");
         }
       })
       .catch(err => {
+        console.log(err);
+      });
+
+    getStudentSubjects()
+      .then(res => {
+        if (res.status === 200) {
+          console.log(res);
+
+          let teamsFromApi = res.data.map(team => {
+            return { value: team.subjectid, display: team.subjectname };
+          });
+          this.setState({
+            subjectsList: [{ value: "", display: "Select Subject" }].concat(
+              teamsFromApi
+            )
+          });
+          console.log(this.state.subjectsList);
+        } else if (res.status === 400) {
+          console.log("Error in finding subjects");
+        }
+      })
+      .catch(err => {
+        console.log("Error in subjects");
         console.log(err);
       });
   }
@@ -91,10 +121,43 @@ class Profile extends Component {
       });
   };
 
+  showSubjectsData = event => {
+    event.preventDefault();
+    console.log(this.refs.academicYear2.value);
+    console.log(this.refs.subjectSelected.value);
+    if (
+      this.refs.academicYear2.value !== "" &&
+      this.refs.subjectSelected.value !== ""
+    ) {
+      this.setState({ showTable: true });
+    }
+    const user2 = {
+      student_id: this.state.student_id,
+      academics: this.refs.academicYear2.value,
+      subject: this.refs.subjectSelected.value
+    };
+    console.log(user2);
+    getSubjectMarks(user2)
+      .then(res => {
+        if (res.status === 200) {
+          console.log("Subject Data Found!");
+          console.log(res.data);
+          this.setState({ subjectData: res.data, showTable: true });
+        } else {
+          if (res.status === 400) {
+            console.log("Error in marksheet");
+          }
+        }
+      })
+      .catch(err => {
+        console.log(err);
+      });
+  };
+
   render() {
     let tableRow = this.state.academicData.map((item, index) => {
       return (
-        <tr key={index}>
+        <tr key={item.examname}>
           <td>{item.studentid}</td>
           <td>{item.examname}</td>
           <td align="center">{item.History}</td>
@@ -110,6 +173,26 @@ class Profile extends Component {
         </tr>
       );
     });
+
+    let subjectRowData = this.state.subjectData.map((item, index) => {
+      return (
+        <tr key={item.examname}>
+          <td>{item.studentid}</td>
+          <td>{item.examname}</td>
+          <td align="center">{item.chapter1}</td>
+          <td align="center">{item.chapter2}</td>
+          <td align="center">{item.chapter3}</td>
+          <td align="center">{item.chapter4}</td>
+          <td align="center">{item.chapter5}</td>
+          <td align="center">{item.chapter6}</td>
+          <td align="center">{item.chapter7}</td>
+          <td align="center">{item.chapter8}</td>
+          <td align="center">{item.chapter9}</td>
+          <td align="center">{item.chapter10}</td>
+        </tr>
+      );
+    });
+
     return (
       <>
         <Tab.Container id="profile-page-cnt" defaultActiveKey="profile">
@@ -187,7 +270,7 @@ class Profile extends Component {
                               name="year"
                               className="custom-select"
                             >
-                              {this.state.academics.map(team => (
+                              {this.state.academicsYearsList.map(team => (
                                 <option key={team.value} value={team.value}>
                                   {team.display}
                                 </option>
@@ -211,26 +294,94 @@ class Profile extends Component {
                             (this.state.showTable ? "d-table" : "d-none")
                           }
                         >
-                          <tr>
-                            <th>Student Id</th>
-                            <th>Exam</th>
-                            <th>History</th>
-                            <th>Geography</th>
-                            <th>Politics</th>
-                            <th>Economics</th>
-                            <th>Current</th>
-                            <th>Technology</th>
-                            <th>Ethics</th>
-                            <th>CSAT</th>
-                            <th>English</th>
-                            <th>ModLang</th>
-                          </tr>
-                          {tableRow}
+                          <tbody>
+                            <tr>
+                              <th>Student Id</th>
+                              <th>Exam</th>
+                              <th>History</th>
+                              <th>Geography</th>
+                              <th>Politics</th>
+                              <th>Economics</th>
+                              <th>Current</th>
+                              <th>Technology</th>
+                              <th>Ethics</th>
+                              <th>CSAT</th>
+                              <th>English</th>
+                              <th>ModLang</th>
+                            </tr>
+                            {tableRow}
+                          </tbody>
                         </table>
                       </div>
                     </Tab>
                     <Tab eventKey="chapter" title="Chapter Wise">
-                      <h1>By chapter result</h1>
+                      <form onSubmit={this.showSubjectsData} className="mt-4">
+                        <div className="row">
+                          <label className="col-sm-2">
+                            <strong>Academics:</strong>{" "}
+                          </label>
+                          <div className="col-sm-4">
+                            <select
+                              ref="academicYear2"
+                              onChange={this.toggleDetails}
+                              name="year"
+                              className="custom-select"
+                            >
+                              {this.state.academicsYearsList.map(team => (
+                                <option key={team.value} value={team.value}>
+                                  {team.display}
+                                </option>
+                              ))}
+                            </select>
+                            <select
+                              ref="subjectSelected"
+                              onChange={this.toggleDetails}
+                              name="subject"
+                              className="custom-select"
+                            >
+                              {this.state.subjectsList.map(team => (
+                                <option key={team.value} value={team.value}>
+                                  {team.display}
+                                </option>
+                              ))}
+                            </select>
+                          </div>
+                          <div className="col-md-3 mb-3">
+                            <input
+                              disabled={this.state.isDisabled}
+                              className="btn btn-md btn-block btn-primary details-btn"
+                              value="Show Details"
+                              type="submit"
+                            />
+                          </div>
+                        </div>
+                      </form>
+                      <div className="table-cnt">
+                        <table
+                          className={
+                            "table profile-detail striped bordered " +
+                            (this.state.showTable ? "d-table" : "d-none")
+                          }
+                        >
+                          <tbody>
+                            <tr>
+                              <th>Student Id</th>
+                              <th>Exam</th>
+                              <th>Chapter 1</th>
+                              <th>Chapter 2</th>
+                              <th>Chapter 3</th>
+                              <th>Chapter 4</th>
+                              <th>Chapter 5</th>
+                              <th>Chapter 6</th>
+                              <th>Chapter 7</th>
+                              <th>Chapter 8</th>
+                              <th>Chapter 9</th>
+                              <th>Chapter 10</th>
+                            </tr>
+                            {subjectRowData}
+                          </tbody>
+                        </table>
+                      </div>
                     </Tab>
                   </Tabs>
                 </Tab.Pane>

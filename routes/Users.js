@@ -10,6 +10,7 @@ const Sequelize = require("sequelize");
 const Student = require("../models/User");
 const Admin = require("../models/Admin");
 const Academics = require("../models/Academics");
+const Subjects = require("../models/Subjects");
 const MarkSheet = require("../models/MarkSheet");
 const Exams = require("../models/Exams");
 
@@ -205,9 +206,29 @@ users.post("/studentAcademics", (req, res) => {
     });
 });
 
+users.post("/studentSubjects", (req, res) => {
+  console.log("studentSubjects");
+  Subjects.findAll()
+    .then(subject => {
+      // Check if record exists in db
+      if (subject) {
+        console.log("Subjects Exists");
+        res.send(subject);
+      } else {
+        res.status(400).send({
+          status: 400,
+          message: "Subjects does not exists 1",
+          type: "internal"
+        });
+      }
+    })
+    .catch(err => {
+      console.log("Us is here Subjects");
+      res.status(400).json({ error: err });
+    });
+});
 users.post("/studentMarks", (req, res) => {
-  const userData = {},
-    academicYear = req.body.academics,
+  const academicYear = req.body.academics,
     student_id = req.body.student_id;
   console.log("Route Marks : ");
   console.log(req.body.academics);
@@ -434,4 +455,34 @@ users.post("/studentMarks", (req, res) => {
     });
 });
 
+users.post("/subjectMarks", (req, res) => {
+  console.log("Route subjectMarks");
+  const student_id = req.body.student_id,
+    academicYear = req.body.academicYear,
+    subjectid = req.body.subjectid;
+  console.log(req.body.academicYear + " " + req.body.subjectid);
+  db.sequelize
+    .query(
+      'SELECT S.firstName,S.studentid,E.examname, M.chapter1,M.chapter2,M.chapter3,M.chapter4,M.chapter5,M.chapter6,M.chapter7,M.chapter8,M.chapter9,M.chapter10 FROM marksheet M INNER JOIN studentsdetails S ON M.studentid = S.studentid INNER JOIN exams E ON M.examid = E.examid WHERE M.academicyear = "' +
+        academicYear +
+        '" AND M.subjectid = "' +
+        subjectid +
+        '" AND s.studentid = "' +
+        student_id +
+        '"',
+      {
+        raw: true,
+        hierarchy: true,
+        model: MarkSheet,
+        mapToModel: true
+        // pass true here if you have any mapped fields
+      }
+    )
+    .then(record => {
+      // Each record will now be an instance of MarkSheet
+      //console.log("In Sequelize query");
+      //console.log(record);
+      res.send(record);
+    });
+});
 module.exports = users;
