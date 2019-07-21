@@ -34,7 +34,15 @@ class NavBar extends Component {
     );
     const userLink = (
       <>
-        <Nav.Link href="/profile">User</Nav.Link>
+        <Nav.Link
+          href="/profile"
+          className={
+            "nav-item " +
+            (this.props.location.pathname === "/profile" ? "active" : "")
+          }
+        >
+          User
+        </Nav.Link>
         <Nav.Link href="/" onClick={this.logOut.bind(this)}>
           Logout
         </Nav.Link>
