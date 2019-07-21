@@ -17,9 +17,12 @@ class Profile extends Component {
     email: "",
     academicsYearsList: [],
     showTable: false,
+    showSubjectTable: false,
     academicData: [],
     subjectData: [],
     subjectsList: [],
+    isyearBtnDisabled: true,
+    isSubjectBtnDisabled: true,
     root: {
       width: "100%",
       overflowX: "auto"
@@ -129,7 +132,7 @@ class Profile extends Component {
       this.refs.academicYear2.value !== "" &&
       this.refs.subjectSelected.value !== ""
     ) {
-      this.setState({ showTable: true });
+      this.setState({ showSubjectTable: true });
     }
     const user2 = {
       student_id: this.state.student_id,
@@ -142,7 +145,7 @@ class Profile extends Component {
         if (res.status === 200) {
           console.log("Subject Data Found!");
           console.log(res.data);
-          this.setState({ subjectData: res.data, showTable: true });
+          this.setState({ subjectData: res.data, showSubjectTable: true });
         } else {
           if (res.status === 400) {
             console.log("Error in marksheet");
@@ -154,11 +157,30 @@ class Profile extends Component {
       });
   };
 
+  toggleDetails = () => {
+    if (this.refs.academicYear.value !== "") {
+      this.setState({ isyearBtnDisabled: false });
+    } else {
+      this.setState({ isyearBtnDisabled: true, showTable: false });
+    }
+  };
+
+  toggleSubjectDetails = event => {
+    if (
+      this.refs.academicYear2.value !== "" &&
+      this.refs.subjectSelected.value !== ""
+    ) {
+      this.setState({ isSubjectBtnDisabled: false });
+    } else {
+      this.setState({ showSubjectTable: false, isSubjectBtnDisabled: true });
+    }
+  };
+
   render() {
     let tableRow = this.state.academicData.map((item, index) => {
       return (
         <tr key={item.examname}>
-          <td>{item.studentid}</td>
+          {/* <td>{item.studentid}</td> */}
           <td>{item.examname}</td>
           <td align="center">{item.History}</td>
           <td align="center">{item.Geography}</td>
@@ -177,7 +199,7 @@ class Profile extends Component {
     let subjectRowData = this.state.subjectData.map((item, index) => {
       return (
         <tr key={item.examname}>
-          <td>{item.studentid}</td>
+          {/* <td>{item.studentid}</td> */}
           <td>{item.examname}</td>
           <td align="center">{item.chapter1}</td>
           <td align="center">{item.chapter2}</td>
@@ -230,7 +252,7 @@ class Profile extends Component {
                       />
                     </Col>
                     <Col sm={10}>
-                      <Table striped hover>
+                      <Table striped bordered>
                         <thead>
                           <tr>
                             <th>First Name</th>
@@ -260,10 +282,12 @@ class Profile extends Component {
                     <Tab eventKey="year" title="Year Wise">
                       <form onSubmit={this.showResult} className="mt-4">
                         <div className="row">
-                          <label className="col-sm-2">
-                            <strong>Academics:</strong>{" "}
-                          </label>
-                          <div className="col-sm-4">
+                          <Col sm={2}>
+                            <label>
+                              <strong>Academics:</strong>{" "}
+                            </label>
+                          </Col>
+                          <Col sm={4}>
                             <select
                               ref="academicYear"
                               onChange={this.toggleDetails}
@@ -276,27 +300,30 @@ class Profile extends Component {
                                 </option>
                               ))}
                             </select>
-                          </div>
-                          <div className="col-md-3 mb-3">
+                          </Col>
+                          <Col sm={2}>
                             <input
-                              disabled={this.state.isDisabled}
+                              disabled={this.state.isyearBtnDisabled}
                               className="btn btn-md btn-block btn-primary details-btn"
                               value="Show Result"
                               type="submit"
                             />
-                          </div>
+                          </Col>
                         </div>
                       </form>
                       <div className="table-cnt">
-                        <table
+                        <Table
+                          striped
+                          bordered
+                          variant="dark"
                           className={
-                            "table profile-detail striped bordered " +
+                            "mt-4 " +
                             (this.state.showTable ? "d-table" : "d-none")
                           }
                         >
                           <tbody>
                             <tr>
-                              <th>Student Id</th>
+                              {/* <th>Student Id</th> */}
                               <th>Exam</th>
                               <th>History</th>
                               <th>Geography</th>
@@ -311,19 +338,19 @@ class Profile extends Component {
                             </tr>
                             {tableRow}
                           </tbody>
-                        </table>
+                        </Table>
                       </div>
                     </Tab>
                     <Tab eventKey="chapter" title="Chapter Wise">
                       <form onSubmit={this.showSubjectsData} className="mt-4">
-                        <div className="row">
+                        <Row>
                           <label className="col-sm-2">
                             <strong>Academics:</strong>{" "}
                           </label>
-                          <div className="col-sm-4">
+                          <Col sm={3}>
                             <select
                               ref="academicYear2"
-                              onChange={this.toggleDetails}
+                              onChange={this.toggleSubjectDetails}
                               name="year"
                               className="custom-select"
                             >
@@ -333,9 +360,11 @@ class Profile extends Component {
                                 </option>
                               ))}
                             </select>
+                          </Col>
+                          <Col sm={3}>
                             <select
                               ref="subjectSelected"
-                              onChange={this.toggleDetails}
+                              onChange={this.toggleSubjectDetails}
                               name="subject"
                               className="custom-select"
                             >
@@ -345,27 +374,30 @@ class Profile extends Component {
                                 </option>
                               ))}
                             </select>
-                          </div>
-                          <div className="col-md-3 mb-3">
+                          </Col>
+                          <Col sm={3}>
                             <input
-                              disabled={this.state.isDisabled}
+                              disabled={this.state.isSubjectBtnDisabled}
                               className="btn btn-md btn-block btn-primary details-btn"
                               value="Show Details"
                               type="submit"
                             />
-                          </div>
-                        </div>
+                          </Col>
+                        </Row>
                       </form>
                       <div className="table-cnt">
-                        <table
+                        <Table
+                          striped
+                          bordered
+                          variant="dark"
                           className={
-                            "table profile-detail striped bordered " +
-                            (this.state.showTable ? "d-table" : "d-none")
+                            "mt-4 " +
+                            (this.state.showSubjectTable ? "d-table" : "d-none")
                           }
                         >
                           <tbody>
                             <tr>
-                              <th>Student Id</th>
+                              {/* <th>Student Id</th> */}
                               <th>Exam</th>
                               <th>Chapter 1</th>
                               <th>Chapter 2</th>
@@ -380,7 +412,7 @@ class Profile extends Component {
                             </tr>
                             {subjectRowData}
                           </tbody>
-                        </table>
+                        </Table>
                       </div>
                     </Tab>
                   </Tabs>
