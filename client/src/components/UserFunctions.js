@@ -72,6 +72,18 @@ export const loginAdmin = admin => {
     });
 };
 
+export const createNewStudent = student => {
+  console.log(student)
+  return axios
+    .post("users/addStudent", student)
+    .then(res => {
+      return res;
+    })
+    .catch(err => {
+      console.log(err);
+    });
+}
+
 export const getStudentAcamedics = student_id => {
   // console.log("getStudentAcamedics : " + student_id);
   return axios

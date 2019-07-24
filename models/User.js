@@ -15,7 +15,31 @@ module.exports = db.sequelize.define(
     lastName: {
       type: Sequelize.STRING
     },
+    dob: {
+      type: Sequelize.DATE
+    },
+    qualification: {
+      type: Sequelize.STRING
+    },
+    board: {
+      type: Sequelize.STRING
+    },
     email: {
+      type: Sequelize.STRING
+    },
+    contact: {
+      type: Sequelize.STRING
+    },
+    fathersname: {
+      type: Sequelize.STRING
+    },
+    mothersname: {
+      type: Sequelize.STRING
+    },
+    occupation: {
+      type: Sequelize.STRING
+    },
+    income: {
       type: Sequelize.STRING
     },
     password: {

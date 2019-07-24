@@ -13,13 +13,13 @@ module.exports = db.sequelize.define(
       type: Sequelize.STRING
     },
     last_Name: {
-      type: Sequelize.INTEGER
+      type: Sequelize.STRING
     },
     email: {
       type: Sequelize.STRING
     },
     contact: {
-      type: Sequelize.INTEGER
+      type: Sequelize.STRING
     },
     password: {
       type: Sequelize.STRING
