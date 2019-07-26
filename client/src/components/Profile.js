@@ -163,6 +163,11 @@ class Profile extends Component {
     } else {
       this.setState({ isyearBtnDisabled: true, showTable: false });
     }
+    if (this.refs.academicYear2.value !== "" && this.refs.subjectSelected.value !== "") {
+      this.setState({ isSubjectBtnDisabled: false });
+    } else {
+      this.setState({ isSubjectBtnDisabled: true, showTable: false });
+    }
   };
 
   toggleSubjectDetails = event => {

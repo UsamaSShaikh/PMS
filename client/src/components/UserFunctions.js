@@ -81,6 +81,7 @@ export const createNewStudent = student => {
     })
     .catch(err => {
       console.log(err);
+      return err.response;
     });
 }
 
@@ -99,6 +100,22 @@ export const getStudentAcamedics = student_id => {
     .catch(err => {
       // console.log("User Functions");
       // console.log(err);
+      return err.response;
+    });
+};
+
+export const getStudentsDetails = () => {
+  return axios
+    .post("users/studentsDetails")
+    .then(res => {
+      console.log("User Functions Students Details");
+      console.log(res);
+      return res;
+    })
+    .catch(err => {
+      console.log("U.F. Students Details Error");
+      console.log(err);
+      return err.response;
     });
 };
 
@@ -114,6 +131,7 @@ export const getStudentSubjects = () => {
     .catch(err => {
       console.log("User Functions");
       console.log(err);
+      return err.response;
     });
 };
 
@@ -133,6 +151,7 @@ export const getStudentMarks = user => {
     .catch(err => {
       // console.log("User Functions");
       // console.log(err);
+      return err.response;
     });
 };
 
@@ -157,18 +176,35 @@ export const getSubjectMarks = user => {
     })
     .catch(err => {
       console.log(err);
+      return err.response;
     });
 };
 
-export const getSubject = () => {
+export const getStudentExams = () => {
   return axios
-    .post("users/subject")
+    .post("users/studentExams")
     .then(res => {
-      // console.log("U.F. getSubject success");
+      console.log("User Functions Exams");
+      console.log(res);
       return res;
     })
     .catch(err => {
       console.log("U.F. getSubject Error");
       console.log(err);
+      return err.response;
     });
 };
+
+export const AddStudentMarks = studentData => {
+  console.log(studentData);
+  return axios
+    .post("users/addStudentMarks", studentData)
+    .then(res => {
+      console.log("Successfully Added Student Marks!")
+      return res;
+    })
+    .catch(err => {
+      console.log(err);
+      return err.response;
+    });
+}

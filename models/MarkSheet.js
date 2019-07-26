@@ -4,10 +4,6 @@ const db = require("../database/db");
 module.exports = db.sequelize.define(
   "marksheet",
   {
-    srno: {
-      type: Sequelize.INTEGER,
-      autoIncrement: true
-    },
     studentid: {
       type: Sequelize.INTEGER,
       primaryKey: true
@@ -56,6 +52,7 @@ module.exports = db.sequelize.define(
     }
   },
   {
-    timestamps: false
+    timestamps: false,
+    freezeTableName: true
   }
 );

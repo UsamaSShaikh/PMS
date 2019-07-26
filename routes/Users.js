@@ -7,7 +7,7 @@ const bcrypt = require("bcrypt");
 const db = require("../database/db");
 const Sequelize = require("sequelize");
 
-const Student = require("../models/User");
+const Student = require("../models/Students");
 const Admin = require("../models/Admin");
 const Academics = require("../models/Academics");
 const Subjects = require("../models/Subjects");
@@ -211,23 +211,6 @@ users.post("/addStudent", (req, res) => {
       console.log("Us is here 3");
       res.status(400).json({ error: err });
     });
-
-  /*
-  db.sequelize
-      .query('INSERT INTO studentsdetails req.body.studentid+"', 'Uzair', 'Shaikh', '2019-07-04', 'MCA', 'Pune University', 'uzair.shaikh@gmail.com', '9823123456', 'Ashfaque', 'Rabia', 'Buisness', '1000000', '')',{
-        raw: true,
-        hierarchy: true,
-        model: MarkSheet,
-        mapToModel: true
-        // pass true here if you have any mapped fields
-      }
-    )
-    .then(record => {
-      // Each record will now be an instance of MarkSheet
-      //console.log("In Sequelize query");
-      //console.log(record);
-      res.send(record);
-    });*/
 })
 
 users.post("/studentAcademics", (req, res) => {
@@ -262,6 +245,50 @@ users.post("/studentAcademics", (req, res) => {
     });
 });
 
+users.post("/studentsDetails", (req, res) => {
+  console.log("studentsDetails");
+  Student.findAll()
+    .then(student => {
+      // Check if record exists in db
+      if (student) {
+        console.log("Students Details Exists");
+        res.send(student);
+      } else {
+        res.status(400).send({
+          status: 400,
+          message: "Students Details does not exists 1",
+          type: "internal"
+        });
+      }
+    })
+    .catch(err => {
+      console.log("Us is here Subjects");
+      res.status(400).json({ error: err });
+    });
+});
+
+users.post("/studentExams", (req, res) => {
+  console.log("studentExams");
+  Exams.findAll()
+    .then(exam => {
+      // Check if record exists in db
+      if (exam) {
+        console.log("Exams Exists");
+        res.send(exam);
+      } else {
+        res.status(400).send({
+          status: 400,
+          message: "Exams does not exists 1",
+          type: "internal"
+        });
+      }
+    })
+    .catch(err => {
+      console.log("Us is here Exams");
+      res.status(400).json({ error: err });
+    });
+});
+
 users.post("/studentSubjects", (req, res) => {
   console.log("studentSubjects");
   Subjects.findAll()
@@ -283,6 +310,7 @@ users.post("/studentSubjects", (req, res) => {
       res.status(400).json({ error: err });
     });
 });
+
 users.post("/studentMarks", (req, res) => {
   const academicYear = req.body.academics,
     student_id = req.body.student_id;
@@ -541,4 +569,46 @@ users.post("/subjectMarks", (req, res) => {
       res.send(record);
     });
 });
+
+users.post("/addStudentMarks", (req, res) => {
+  console.log("Route Add Student Marks")
+  console.log(req.body);
+
+  MarkSheet.create({
+    studentid: req.body.studentid,
+    academicyear: req.body.academicyear,
+    examid: req.body.examid,
+    subjectid: req.body.subjectid,
+    chapter1: req.body.chapter1,
+    chapter2: req.body.chapter2,
+    chapter3: req.body.chapter3,
+    chapter4: req.body.chapter4,
+    chapter5: req.body.chapter5,
+    chapter6: req.body.chapter6,
+    chapter7: req.body.chapter7,
+    chapter8: req.body.chapter8,
+    chapter9: req.body.chapter9,
+    chapter10: req.body.chapter10,
+    Remarks: req.body.Remarks
+  })
+    .then(user => {
+      if (user) {
+        console.log("Student Marks Added Successfully!");
+        res.send(user);
+        //res.json(data.get({plain: true}));
+      }
+      else {
+        console.log("Error in insert Marks");
+        res.status(400).send({
+          status: 400,
+          message: "Error in insert Student Marks",
+          type: "internal"
+        });
+      }
+    }).catch(err => {
+      console.log("Us is here 3");
+      res.status(400).json({ error: err });
+    });
+})
+
 module.exports = users;
