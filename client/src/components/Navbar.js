@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { Link, withRouter } from "react-router-dom";
-import { Navbar, Nav, Image } from "react-bootstrap";
+import { Navbar, Nav, Image, Container } from "react-bootstrap";
 
 class NavBar extends Component {
   logOut(e) {
@@ -51,28 +51,30 @@ class NavBar extends Component {
     return (
       <>
         <Navbar bg="dark" variant="dark" className="kp-navbar">
-          <Navbar.Brand href="#home">
-            <Image
-              src="../images/logo-icon.jpg"
-              rounded
-              alt="logo"
-              className={
-                "innerLogo " +
-                (this.props.location.pathname === "/register"
-                  ? "d-none"
-                  : this.props.location.pathname === "/login"
-                  ? "d-none"
-                  : "d-inline")
-              }
-            />
-            KPTurst - Performance Management
-          </Navbar.Brand>
-          <Nav className="ml-auto">
-            {/* <Nav.Link href="#home">Home</Nav.Link>
-            <Nav.Link href="#features">Features</Nav.Link>
-            <Nav.Link href="#pricing">Pricing</Nav.Link> */}
-            {localStorage.usertoken ? userLink : loginRegLink}
-          </Nav>
+          <Container fluid="true">
+            <Navbar.Brand href="#home">
+              <Image
+                src="../images/logo-icon.jpg"
+                rounded
+                alt="logo"
+                className={
+                  "innerLogo " +
+                  (this.props.location.pathname === "/register"
+                    ? "d-none"
+                    : this.props.location.pathname === "/login"
+                    ? "d-none"
+                    : "d-inline")
+                }
+              />
+              KPTurst -{" "}
+              <span className="d-lg-inline d-md-inline d-sm-none">
+                Performance Management
+              </span>
+            </Navbar.Brand>
+            <Nav className="ml-auto">
+              {localStorage.usertoken ? userLink : loginRegLink}
+            </Nav>
+          </Container>
         </Navbar>
       </>
     );

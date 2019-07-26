@@ -69,8 +69,6 @@ export class Profiledetails extends Component {
           getStudentMarks(user2)
             .then(res => {
               if (res.status === 200) {
-                // console.log("Marksheet Data Found!");
-                // console.log(res.data);
                 this.setState({ academicData: res.data });
               } else {
                 if (res.status === 400) {
@@ -105,11 +103,7 @@ export class Profiledetails extends Component {
 
     if (this.refs.academicYear.value === "") {
       this.setState({ isDisabled: true });
-    }
-    // else if (this.refs.subjects.value === "") {
-    //   this.setState({ isDisabled: true });
-    // }
-    else {
+    } else {
       this.setState({ isDisabled: false });
     }
   };

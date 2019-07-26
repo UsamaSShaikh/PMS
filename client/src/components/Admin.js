@@ -2,7 +2,17 @@ import React, { Component } from "react";
 import { createNewStudent } from "./UserFunctions";
 import { Link } from "react-router-dom";
 import jwt_decode from "jwt-decode";
-import { Nav, Tab, Col, Tabs, Row, Table, Image } from "react-bootstrap";
+import {
+  Nav,
+  Tab,
+  Col,
+  Tabs,
+  Row,
+  Table,
+  Image,
+  Form,
+  Button
+} from "react-bootstrap";
 
 class Admin extends Component {
   constructor(props) {
@@ -12,7 +22,7 @@ class Admin extends Component {
       studentid: "",
       firstName: "",
       lastName: "",
-      dob: '',
+      dob: "",
       qualification: "",
       board: "",
       email: "",
@@ -22,7 +32,7 @@ class Admin extends Component {
       occupation: "",
       income: "",
       error: ""
-    }
+    };
     this.handleChange = this.handleChange.bind(this);
     this.oncreateNewStudent = this.oncreateNewStudent.bind(this);
   }
@@ -36,13 +46,13 @@ class Admin extends Component {
     });
   }
 
-  handleChange = (e) => {
+  handleChange = e => {
     this.setState({ [e.target.name]: e.target.value });
-  }
+  };
 
-  oncreateNewStudent = (event) => {
+  oncreateNewStudent = event => {
     event.preventDefault();
-    console.log(this.state)
+    console.log(this.state);
     createNewStudent(this.state)
       .then(res => {
         console.log(res);
@@ -58,7 +68,7 @@ class Admin extends Component {
       .catch(err => {
         console.log(err);
       });
-  }
+  };
 
   render() {
     return (
@@ -118,59 +128,186 @@ class Admin extends Component {
                   </Row>
                 </Tab.Pane>
                 <Tab.Pane eventKey="addUser">
-                  <form onSubmit={this.oncreateNewStudent}>
-                    <label>
-                      Student ID:
-                        <input type="text" name="studentid" value={this.state.value} onChange={this.handleChange} />
-                    </label>
-                    <label>
-                      First Name:
-                        <input type="text" name="firstName" value={this.state.value} onChange={this.handleChange} />
-                    </label>
-                    <label>
-                      Last Name:
-                        <input type="text" name="lastName" value={this.state.value} onChange={this.handleChange} />
-                    </label>
-                    <label>
-                      DOB:
-                        <input type="text" name="dob" value={this.state.value} onChange={this.handleChange} />
-                    </label>
-                    <label>
-                      Qualification:
-                        <input type="text" name="qualification" value={this.state.value} onChange={this.handleChange} />
-                    </label>
-                    <label>
-                      Board:
-                        <input type="text" name="board" value={this.state.value} onChange={this.handleChange} />
-                    </label>
-                    <label>
-                      Email:
-                        <input type="text" name="email" value={this.state.value} onChange={this.handleChange} />
-                    </label>
-                    <label>
-                      Contact:
-                        <input type="text" name="contact" value={this.state.value} onChange={this.handleChange} />
-                    </label>
-                    <label>
-                      Father's Name:
-                        <input type="text" name="fathersname" value={this.state.value} onChange={this.handleChange} />
-                    </label>
-                    <label>
-                      Mother's Name:
-                        <input type="text" name="mothersname" value={this.state.value} onChange={this.handleChange} />
-                    </label>
-                    <label>
-                      Occupation:
-                        <input type="text" name="occupation" value={this.state.value} onChange={this.handleChange} />
-                    </label>
-                    <label>
-                      Family Income:
-                        <input type="text" name="income" value={this.state.value} onChange={this.handleChange} />
-                    </label>
-                    <input type="submit" value="Submit" />
-                  </form>
+                  <Form onSubmit={this.oncreateNewStudent}>
+                    <Row>
+                      <Col sm={3}>
+                        <Form.Group>
+                          <strong>
+                            <Form.Label>Student ID:</Form.Label>
+                          </strong>
+                          <Form.Control
+                            type="text"
+                            name="studentid"
+                            value={this.state.value}
+                            onChange={this.handleChange}
+                          />
+                        </Form.Group>
+                      </Col>
+
+                      <Col sm={3}>
+                        <Form.Group>
+                          <strong>
+                            <Form.Label>First Name:</Form.Label>
+                          </strong>
+                          <Form.Control
+                            type="text"
+                            name="firstName"
+                            value={this.state.value}
+                            onChange={this.handleChange}
+                          />
+                        </Form.Group>
+                      </Col>
+
+                      <Col sm={3}>
+                        <Form.Group>
+                          <strong>
+                            <Form.Label>Last Name:</Form.Label>
+                          </strong>
+                          <Form.Control
+                            type="text"
+                            name="lastName"
+                            value={this.state.value}
+                            onChange={this.handleChange}
+                          />
+                        </Form.Group>
+                      </Col>
+                      <Col sm={3}>
+                        <Form.Group>
+                          <strong>
+                            <Form.Label>DOB:</Form.Label>
+                          </strong>
+                          <Form.Control
+                            type="text"
+                            name="dob"
+                            value={this.state.value}
+                            onChange={this.handleChange}
+                          />
+                        </Form.Group>
+                      </Col>
+                    </Row>
+                    <Row>
+                      <Col sm={3}>
+                        <Form.Group>
+                          <strong>
+                            <Form.Label>Qualification:</Form.Label>
+                          </strong>
+                          <Form.Control
+                            type="text"
+                            name="qualification"
+                            value={this.state.value}
+                            onChange={this.handleChange}
+                          />
+                        </Form.Group>
+                      </Col>
+                      <Col sm={3}>
+                        <Form.Group>
+                          <strong>
+                            <Form.Label>Board:</Form.Label>
+                          </strong>
+                          <Form.Control
+                            type="text"
+                            name="board"
+                            value={this.state.value}
+                            onChange={this.handleChange}
+                          />
+                        </Form.Group>
+                      </Col>
+                      <Col sm={3}>
+                        <Form.Group>
+                          <strong>
+                            <Form.Label>Email:</Form.Label>
+                          </strong>
+                          <Form.Control
+                            type="text"
+                            name="email"
+                            value={this.state.value}
+                            onChange={this.handleChange}
+                          />
+                        </Form.Group>
+                      </Col>
+                      <Col sm={3}>
+                        <Form.Group>
+                          <strong>
+                            <Form.Label>Contact:</Form.Label>
+                          </strong>
+                          <Form.Control
+                            type="text"
+                            name="contact"
+                            value={this.state.value}
+                            onChange={this.handleChange}
+                          />
+                        </Form.Group>
+                      </Col>
+                    </Row>
+                    <Row>
+                      <Col sm={3}>
+                        <Form.Group>
+                          <strong>
+                            <Form.Label>Father's Name:</Form.Label>
+                          </strong>
+                          <Form.Control
+                            type="text"
+                            name="fathersname"
+                            value={this.state.value}
+                            onChange={this.handleChange}
+                          />
+                        </Form.Group>
+                      </Col>
+                      <Col sm={3}>
+                        <Form.Group>
+                          <strong>
+                            <Form.Label>Mother's Name:</Form.Label>
+                          </strong>
+                          <Form.Control
+                            type="text"
+                            name="mothersname"
+                            value={this.state.value}
+                            onChange={this.handleChange}
+                          />
+                        </Form.Group>
+                      </Col>
+                      <Col sm={3}>
+                        <Form.Group>
+                          <strong>
+                            <Form.Label>Occupation:</Form.Label>
+                          </strong>
+                          <Form.Control
+                            type="text"
+                            name="fathersname"
+                            value={this.state.value}
+                            onChange={this.handleChange}
+                          />
+                        </Form.Group>
+                      </Col>
+                      <Col sm={3}>
+                        <Form.Group>
+                          <strong>
+                            <Form.Label>Family Income:</Form.Label>
+                          </strong>
+                          <Form.Control
+                            type="text"
+                            name="income"
+                            value={this.state.value}
+                            onChange={this.handleChange}
+                          />
+                        </Form.Group>
+                      </Col>
+                    </Row>
+                    <hr />
+                    <Row>
+                      <Col sm={2}>
+                        <Button
+                          variant="primary"
+                          className="btn btn-block"
+                          type="submit"
+                        >
+                          Submit
+                        </Button>
+                      </Col>
+                    </Row>
+                  </Form>
                 </Tab.Pane>
-                <Tab.Pane eventKey="addMarks"></Tab.Pane>
+                <Tab.Pane eventKey="addMarks" />
               </Tab.Content>
             </Col>
           </Row>

@@ -13,19 +13,30 @@ import Admin from "./components/Admin";
 class App extends Component {
   render() {
     return (
-      <Router>
-        <div className="App">
-          <NavBar />
-          <Route exact path="/" component={Login} />
-          <div className="container-fluid">
-            <Route exact path="/register" component={Register} />
-            <Route exact path="/login" component={Login} />
-            <Route exact path="/admin" component={Admin} />
-            <Route exact path="/profile" component={Profile} />
-            <Route exact path="/details" component={Details} />
+      <>
+        <Router>
+          <div className="App">
+            <NavBar />
+            <Route exact path="/" component={Login} />
+            <div className="container-fluid">
+              <Route exact path="/register" component={Register} />
+              <Route exact path="/login" component={Login} />
+              <Route exact path="/admin" component={Admin} />
+              <Route exact path="/profile" component={Profile} />
+              <Route exact path="/details" component={Details} />
+            </div>
           </div>
-        </div>
-      </Router>
+        </Router>
+        <footer>
+          <div class="powered-by">
+            Powered by{" "}
+            <a href="http://kptrust.in/">
+              KPTurst - Performance Management User
+            </a>
+          </div>
+          <div class="copyright">© 2019 knowledge park charitable trust</div>
+        </footer>
+      </>
     );
   }
 }
