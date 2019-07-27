@@ -28,13 +28,15 @@ class App extends Component {
           </div>
         </Router>
         <footer>
-          <div class="powered-by">
+          <div className="powered-by">
             Powered by{" "}
             <a href="http://kptrust.in/">
               KPTurst - Performance Management User
             </a>
           </div>
-          <div class="copyright">© 2019 knowledge park charitable trust</div>
+          <div className="copyright">
+            © 2019 knowledge park charitable trust
+          </div>
         </footer>
       </>
     );

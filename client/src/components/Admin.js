@@ -1,12 +1,18 @@
 import React, { Component } from "react";
-import { createNewStudent, getStudentsDetails, getStudentSubjects, getStudentExams, AddStudentMarks } from "./UserFunctions";
-import { Link } from "react-router-dom";
+import {
+  createNewStudent,
+  getStudentsDetails,
+  getStudentSubjects,
+  getStudentExams,
+  AddStudentMarks
+} from "./UserFunctions";
+// import { Link } from "react-router-dom";
 import jwt_decode from "jwt-decode";
 import {
   Nav,
   Tab,
   Col,
-  Tabs,
+  // Tabs,
   Row,
   Table,
   Image,
@@ -180,7 +186,7 @@ class Admin extends Component {
       .catch(err => {
         console.log(err);
       });
-  }
+  };
 
   onResetForm1 = event => {
     event.preventDefault();
@@ -219,9 +225,9 @@ class Admin extends Component {
       disableForm2: false,
       showClearBtn1: false
     });
-  }
+  };
 
-  onAddStudentMarks = (event) => {
+  onAddStudentMarks = event => {
     event.preventDefault();
     this.toggleForm2Fields();
     const studentData = {
@@ -240,14 +246,14 @@ class Admin extends Component {
       chapter9: this.state.chapter9Score,
       chapter10: this.state.chapter10Score,
       Remarks: this.state.Remarks
-    }
-    console.log(studentData)
+    };
+    console.log(studentData);
     AddStudentMarks(studentData)
       .then(res => {
         console.log(res);
         if (res.status === 200) {
           // Add Html for Student added message
-          console.log("Marks Added Successfully!")
+          console.log("Marks Added Successfully!");
           this.setState({ error: "Marks Added Successfully!" });
         } else {
           if (res.status === 400) {
@@ -259,7 +265,7 @@ class Admin extends Component {
       .catch(err => {
         console.log(err);
       });
-  }
+  };
 
   render() {
     return (
@@ -319,7 +325,10 @@ class Admin extends Component {
                   </Row>
                 </Tab.Pane>
                 <Tab.Pane eventKey="addUser">
-                  <Form onSubmit={this.oncreateNewStudent} onReset={this.onResetForm1}>
+                  <Form
+                    onSubmit={this.oncreateNewStudent}
+                    onReset={this.onResetForm1}
+                  >
                     <Row>
                       <Col sm={3}>
                         <Form.Group>
@@ -495,7 +504,11 @@ class Admin extends Component {
                           />
                         </Form.Group>
                       </Col>
-                      {this.state.error ? <label>{this.state.error}</label> : ""}
+                      {this.state.error ? (
+                        <label>{this.state.error}</label>
+                      ) : (
+                        ""
+                      )}
                     </Row>
                     <hr />
                     <Row>
@@ -522,191 +535,267 @@ class Admin extends Component {
                   </Form>
                 </Tab.Pane>
                 <Tab.Pane eventKey="addMarks">
-                  <form onSubmit={this.onAddStudentMarks} onReset={this.onResetForm1} className="mt-4">
+                  <form
+                    onSubmit={this.onAddStudentMarks}
+                    onReset={this.onResetForm1}
+                    className="mt-4"
+                  >
                     <Row>
-                      <label className="col-sm-2">
-                        <strong>Academics:</strong>{" "}
-                      </label>
                       <Col sm={3}>
-                        <input type="text"
-                          name="academics"
-                          disabled={this.state.disableForm2}
-                          value={this.state.academics}
-                          onChange={this.onChange}
-                        />
+                        <Form.Group>
+                          <Form.Label>Academics:</Form.Label>
+                          <Form.Control
+                            type="text"
+                            name="academics"
+                            disabled={this.state.disableForm2}
+                            value={this.state.academics}
+                            onChange={this.onChange}
+                          />
+                        </Form.Group>
                       </Col>
                       <Col sm={3}>
-                        <select
-                          ref="studentSelected"
-                          disabled={this.state.disableForm2}
-                          onChange={this.toggleSubjectDetails}
-                          name="student"
-                          className="custom-select"
-                        >
-                          {this.state.studentList.map(team => (
-                            <option key={team.value} value={team.value}>
-                              {team.display}
-                            </option>
-                          ))}
-                        </select>
+                        <Form.Group>
+                          <Form.Label>Student</Form.Label>
+                          <Form.Control
+                            as="select"
+                            ref="studentSelected"
+                            disabled={this.state.disableForm2}
+                            onChange={this.toggleSubjectDetails}
+                            name="student"
+                          >
+                            {this.state.studentList.map(team => (
+                              <option key={team.value} value={team.value}>
+                                {team.display}
+                              </option>
+                            ))}
+                          </Form.Control>
+                        </Form.Group>
                       </Col>
                       <Col sm={3}>
-                        <select
-                          ref="examSelected"
-                          disabled={this.state.disableForm2}
-                          onChange={this.toggleSubjectDetails}
-                          name="exam"
-                          className="custom-select"
-                        >
-                          {this.state.examList.map(team => (
-                            <option key={team.value} value={team.value}>
-                              {team.display}
-                            </option>
-                          ))}
-                        </select>
+                        <Form.Group>
+                          <Form.Label>Exam</Form.Label>
+                          <Form.Control
+                            as="select"
+                            ref="examSelected"
+                            disabled={this.state.disableForm2}
+                            onChange={this.toggleSubjectDetails}
+                            className="custom-select"
+                          >
+                            {this.state.examList.map(team => (
+                              <option key={team.value} value={team.value}>
+                                {team.display}
+                              </option>
+                            ))}
+                          </Form.Control>
+                        </Form.Group>
                       </Col>
                       <Col sm={3}>
-                        <select
-                          ref="subjectSelected"
-                          disabled={this.state.disableForm2}
-                          onChange={this.toggleSubjectDetails}
-                          name="subject"
-                          className="custom-select"
-                        >
-                          {this.state.subjectsList.map(team => (
-                            <option key={team.value} value={team.value}>
-                              {team.display}
-                            </option>
-                          ))}
-                        </select>
+                        <Form.Group>
+                          <Form.Label>Select Subject</Form.Label>
+                          <Form.Control
+                            as="select"
+                            ref="subjectSelected"
+                            disabled={this.state.disableForm2}
+                            onChange={this.toggleSubjectDetails}
+                            className="custom-select"
+                          >
+                            {this.state.subjectsList.map(team => (
+                              <option key={team.value} value={team.value}>
+                                {team.display}
+                              </option>
+                            ))}
+                          </Form.Control>
+                        </Form.Group>
+                      </Col>
+                    </Row>
+                    <Row>
+                      <Col sm={3}>
+                        <Form.Group>
+                          <Form.Label>Chapter 1</Form.Label>
+                          <Form.Control
+                            type="text"
+                            className="form-control"
+                            name="chapter1Score"
+                            placeholder="Chapter 1 Score"
+                            disabled={this.state.disableForm2}
+                            value={this.state.chapter1Score}
+                            onChange={this.onChange}
+                          />
+                        </Form.Group>
                       </Col>
                       <Col sm={3}>
-                        <label htmlFor="chapter1">Chapter 1</label>
-                        <input
-                          type="text"
-                          className="form-control"
-                          name="chapter1Score"
-                          placeholder="Chapter 1 Score"
-                          disabled={this.state.disableForm2}
-                          value={this.state.chapter1Score}
-                          onChange={this.onChange}
-                        />
-                        <label htmlFor="chapter2">Chapter 2</label>
-                        <input
-                          type="text"
-                          className="form-control"
-                          name="chapter2Score"
-                          placeholder="Chapter 2 Score"
-                          disabled={this.state.disableForm2}
-                          value={this.state.chapter2Score}
-                          onChange={this.onChange}
-                        />
-                        <label htmlFor="chapter3">Chapter 3</label>
-                        <input
-                          type="text"
-                          className="form-control"
-                          name="chapter3Score"
-                          placeholder="Chapter 3 Score"
-                          disabled={this.state.disableForm2}
-                          value={this.state.chapter3Score}
-                          onChange={this.onChange}
-                        />
-                        <label htmlFor="chapter4">Chapter 4</label>
-                        <input
-                          type="text"
-                          className="form-control"
-                          name="chapter4Score"
-                          placeholder="Chapter 4 Score"
-                          disabled={this.state.disableForm2}
-                          value={this.state.chapter4Score}
-                          onChange={this.onChange}
-                        />
-                        <label htmlFor="chapter5">Chapter 5</label>
-                        <input
-                          type="text"
-                          className="form-control"
-                          name="chapter5Score"
-                          placeholder="Chapter 5 Score"
-                          disabled={this.state.disableForm2}
-                          value={this.state.chapter5Score}
-                          onChange={this.onChange}
-                        />
-                        <label htmlFor="chapter6">Chapter 6</label>
-                        <input
-                          type="text"
-                          className="form-control"
-                          name="chapter6Score"
-                          placeholder="Chapter 6 Score"
-                          disabled={this.state.disableForm2}
-                          value={this.state.chapter6Score}
-                          onChange={this.onChange}
-                        />
-                        <label htmlFor="chapter7">Chapter 7</label>
-                        <input
-                          type="text"
-                          className="form-control"
-                          name="chapter7Score"
-                          placeholder="Chapter 7 Score"
-                          disabled={this.state.disableForm2}
-                          value={this.state.chapter7Score}
-                          onChange={this.onChange}
-                        />
-                        <label htmlFor="chapter8">Chapter 8</label>
-                        <input
-                          type="text"
-                          className="form-control"
-                          name="chapter8Score"
-                          placeholder="Chapter 8 Score"
-                          disabled={this.state.disableForm2}
-                          value={this.state.chapter8Score}
-                          onChange={this.onChange}
-                        />
-                        <label htmlFor="chapter9">Chapter 9</label>
-                        <input
-                          type="text"
-                          className="form-control"
-                          name="chapter9Score"
-                          placeholder="Chapter 9 Score"
-                          disabled={this.state.disableForm2}
-                          value={this.state.chapter9Score}
-                          onChange={this.onChange}
-                        />
-                        <label htmlFor="chapter10">Chapter 10</label>
-                        <input
-                          type="text"
-                          className="form-control"
-                          name="chapter10Score"
-                          placeholder="Chapter 10 Score"
-                          disabled={this.state.disableForm2}
-                          value={this.state.chapter10Score}
-                          onChange={this.onChange}
-                        />
-                        <label htmlFor="remarks">Remarks</label>
-                        <input
-                          type="text"
-                          className="form-control"
-                          name="Remarks"
-                          placeholder="Remarks"
-                          disabled={this.state.disableForm2}
-                          value={this.state.Remarks}
-                          onChange={this.onChange}
-                        />
-                        {this.state.error ? <label>{this.state.error}</label> : ""}
+                        <Form.Group>
+                          <Form.Label>Chapter 2</Form.Label>
+                          <Form.Control
+                            type="text"
+                            className="form-control"
+                            placeholder="Chapter 2 Score"
+                            disabled={this.state.disableForm2}
+                            value={this.state.chapter2Score}
+                            onChange={this.onChange}
+                          />
+                        </Form.Group>
                       </Col>
                       <Col sm={3}>
-                        <input
-                          disabled={this.state.disableForm2}
-                          className="btn btn-md btn-block btn-primary details-btn"
-                          value="Add Marks"
-                          type="submit"
-                        />
+                        <Form.Group>
+                          <Form.Label>Chapter 3</Form.Label>
+                          <Form.Control
+                            type="text"
+                            className="form-control"
+                            name="chapter3Score"
+                            placeholder="Chapter 3 Score"
+                            disabled={this.state.disableForm2}
+                            value={this.state.chapter3Score}
+                            onChange={this.onChange}
+                          />
+                        </Form.Group>
                       </Col>
-                      <Col sm={2}>
+                      <Col sm={3}>
+                        <Form.Group>
+                          <Form.Label>Chapter 4</Form.Label>
+                          <Form.Control
+                            type="text"
+                            className="form-control"
+                            name="chapter4Score"
+                            placeholder="Chapter 4 Score"
+                            disabled={this.state.disableForm2}
+                            value={this.state.chapter4Score}
+                            onChange={this.onChange}
+                          />
+                        </Form.Group>
+                      </Col>
+                    </Row>
+                    <Row>
+                      <Col sm={3}>
+                        <Form.Group>
+                          <Form.Label>Chapter 4</Form.Label>
+                          <Form.Control
+                            type="text"
+                            className="form-control"
+                            name="chapter4Score"
+                            placeholder="Chapter 4 Score"
+                            disabled={this.state.disableForm2}
+                            value={this.state.chapter4Score}
+                            onChange={this.onChange}
+                          />
+                        </Form.Group>
+                      </Col>
+                      <Col sm={3}>
+                        <Form.Group>
+                          <Form.Label>Chapter 5</Form.Label>
+                          <Form.Control
+                            type="text"
+                            className="form-control"
+                            name="chapter5Score"
+                            placeholder="Chapter 5 Score"
+                            disabled={this.state.disableForm2}
+                            value={this.state.chapter5Score}
+                            onChange={this.onChange}
+                          />
+                        </Form.Group>
+                      </Col>
+                      <Col sm={3}>
+                        <Form.Group>
+                          <Form.Label>Chapter 6</Form.Label>
+                          <Form.Control
+                            type="text"
+                            className="form-control"
+                            name="chapter6Score"
+                            placeholder="Chapter 6 Score"
+                            disabled={this.state.disableForm2}
+                            value={this.state.chapter6Score}
+                            onChange={this.onChange}
+                          />
+                        </Form.Group>
+                      </Col>
+                      <Col sm={3}>
+                        <Form.Group>
+                          <Form.Label>Chapter 7</Form.Label>
+                          <Form.Control
+                            type="text"
+                            className="form-control"
+                            name="chapter7Score"
+                            placeholder="Chapter 7 Score"
+                            disabled={this.state.disableForm2}
+                            value={this.state.chapter7Score}
+                            onChange={this.onChange}
+                          />
+                        </Form.Group>
+                      </Col>
+                    </Row>
+                    <Row>
+                      <Col sm={3}>
+                        <Form.Group>
+                          <Form.Label>Chapter 8</Form.Label>
+                          <Form.Control
+                            type="text"
+                            className="form-control"
+                            name="chapter8Score"
+                            placeholder="Chapter 8 Score"
+                            disabled={this.state.disableForm2}
+                            value={this.state.chapter8Score}
+                            onChange={this.onChange}
+                          />
+                        </Form.Group>
+                      </Col>
+                      <Col sm={3}>
+                        <Form.Group>
+                          <Form.Label>Chapter 9</Form.Label>
+                          <Form.Control
+                            type="text"
+                            className="form-control"
+                            name="chapter9Score"
+                            placeholder="Chapter 9 Score"
+                            disabled={this.state.disableForm2}
+                            value={this.state.chapter9Score}
+                            onChange={this.onChange}
+                          />
+                        </Form.Group>
+                      </Col>
+                      <Col sm={3}>
+                        <Form.Group>
+                          <Form.Label>Chapter 10</Form.Label>
+                          <Form.Control
+                            type="text"
+                            className="form-control"
+                            name="chapter10Score"
+                            placeholder="Chapter 10 Score"
+                            disabled={this.state.disableForm2}
+                            value={this.state.chapter10Score}
+                            onChange={this.onChange}
+                          />
+                        </Form.Group>
+                      </Col>
+                      <Col sm={3}>
+                        <Form.Group>
+                          <Form.Label>Remarks</Form.Label>
+                          <Form.Control
+                            type="text"
+                            className="form-control"
+                            name="Remarks"
+                            placeholder="Remarks"
+                            disabled={this.state.disableForm2}
+                            value={this.state.Remarks}
+                            onChange={this.onChange}
+                          />
+                        </Form.Group>
+                      </Col>
+                      {this.state.error ? (
+                        <label>{this.state.error}</label>
+                      ) : (
+                        ""
+                      )}
+                    </Row>
+                    <Row>
+                      <Col sm={3}>
                         <Button
                           variant="primary"
-                          className="btn btn-block"
-                          type="reset"
+                          type="submit"
+                          disabled={this.state.disableForm2}
                         >
+                          Add Marks
+                        </Button>
+                        <Button variant="primary" className="ml-2" type="reset">
                           Reset
                         </Button>
                       </Col>
