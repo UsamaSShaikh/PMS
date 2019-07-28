@@ -30,8 +30,8 @@ class App extends Component {
         <footer>
           <div className="powered-by">
             Powered by{" "}
-            <a href="http://kptrust.in/">
-              KPTurst - Performance Management User
+            <a href="http://kptrust.in/" target="_blank">
+              KPTrust
             </a>
           </div>
           <div className="copyright">

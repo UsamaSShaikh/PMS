@@ -37,6 +37,7 @@ class Admin extends Component {
       mothersname: "",
       occupation: "",
       income: "",
+      password:"",
       studentList: [],
       examList: [],
       subjectsList: [],
@@ -74,7 +75,7 @@ class Admin extends Component {
   }
 
   componentDidUpdate() {
-    if (this.state.studentList.length == 0) {
+    if (this.state.studentList.length === 0) {
       getStudentsDetails()
         .then(res => {
           if (res.status === 200) {
@@ -97,7 +98,7 @@ class Admin extends Component {
           console.log(err);
         });
     }
-    if (this.state.examList.length == 0) {
+    if (this.state.examList.length === 0) {
       getStudentExams()
         .then(res => {
           if (res.status === 200) {
@@ -120,7 +121,7 @@ class Admin extends Component {
           console.log(err);
         });
     }
-    if (this.state.subjectsList.length == 0) {
+    if (this.state.subjectsList.length === 0) {
       getStudentSubjects()
         .then(res => {
           if (res.status === 200) {
@@ -380,10 +381,10 @@ class Admin extends Component {
                             <Form.Label>DOB:</Form.Label>
                           </strong>
                           <Form.Control
-                            type="text"
+                            type="date" 
                             name="dob"
                             disabled={this.state.disableForm1}
-                            value={this.state.dob}
+                            defaultValue={this.state.dob}
                             onChange={this.onChange}
                           />
                         </Form.Group>
@@ -548,7 +549,7 @@ class Admin extends Component {
                             type="text"
                             name="academics"
                             disabled={this.state.disableForm2}
-                            value={this.state.academics}
+                            defaultValue={this.state.academics}
                             onChange={this.onChange}
                           />
                         </Form.Group>
@@ -618,7 +619,7 @@ class Admin extends Component {
                             name="chapter1Score"
                             placeholder="Chapter 1 Score"
                             disabled={this.state.disableForm2}
-                            value={this.state.chapter1Score}
+                            defaultValue={this.state.chapter1Score}
                             onChange={this.onChange}
                           />
                         </Form.Group>
@@ -628,10 +629,9 @@ class Admin extends Component {
                           <Form.Label>Chapter 2</Form.Label>
                           <Form.Control
                             type="text"
-                            className="form-control"
                             placeholder="Chapter 2 Score"
                             disabled={this.state.disableForm2}
-                            value={this.state.chapter2Score}
+                            defaultValue={this.state.chapter2Score}
                             onChange={this.onChange}
                           />
                         </Form.Group>
@@ -641,11 +641,10 @@ class Admin extends Component {
                           <Form.Label>Chapter 3</Form.Label>
                           <Form.Control
                             type="text"
-                            className="form-control"
                             name="chapter3Score"
                             placeholder="Chapter 3 Score"
                             disabled={this.state.disableForm2}
-                            value={this.state.chapter3Score}
+                            defaultValue={this.state.chapter3Score}
                             onChange={this.onChange}
                           />
                         </Form.Group>
@@ -655,11 +654,10 @@ class Admin extends Component {
                           <Form.Label>Chapter 4</Form.Label>
                           <Form.Control
                             type="text"
-                            className="form-control"
                             name="chapter4Score"
                             placeholder="Chapter 4 Score"
                             disabled={this.state.disableForm2}
-                            value={this.state.chapter4Score}
+                            defaultValue={this.state.chapter4Score}
                             onChange={this.onChange}
                           />
                         </Form.Group>
@@ -668,28 +666,13 @@ class Admin extends Component {
                     <Row>
                       <Col sm={3}>
                         <Form.Group>
-                          <Form.Label>Chapter 4</Form.Label>
-                          <Form.Control
-                            type="text"
-                            className="form-control"
-                            name="chapter4Score"
-                            placeholder="Chapter 4 Score"
-                            disabled={this.state.disableForm2}
-                            value={this.state.chapter4Score}
-                            onChange={this.onChange}
-                          />
-                        </Form.Group>
-                      </Col>
-                      <Col sm={3}>
-                        <Form.Group>
                           <Form.Label>Chapter 5</Form.Label>
                           <Form.Control
                             type="text"
-                            className="form-control"
                             name="chapter5Score"
                             placeholder="Chapter 5 Score"
                             disabled={this.state.disableForm2}
-                            value={this.state.chapter5Score}
+                            defaultValue={this.state.chapter5Score}
                             onChange={this.onChange}
                           />
                         </Form.Group>
@@ -699,11 +682,10 @@ class Admin extends Component {
                           <Form.Label>Chapter 6</Form.Label>
                           <Form.Control
                             type="text"
-                            className="form-control"
                             name="chapter6Score"
                             placeholder="Chapter 6 Score"
                             disabled={this.state.disableForm2}
-                            value={this.state.chapter6Score}
+                            defaultValue={this.state.chapter6Score}
                             onChange={this.onChange}
                           />
                         </Form.Group>
@@ -713,11 +695,23 @@ class Admin extends Component {
                           <Form.Label>Chapter 7</Form.Label>
                           <Form.Control
                             type="text"
-                            className="form-control"
                             name="chapter7Score"
                             placeholder="Chapter 7 Score"
                             disabled={this.state.disableForm2}
-                            value={this.state.chapter7Score}
+                            defaultValue={this.state.chapter7Score}
+                            onChange={this.onChange}
+                          />
+                        </Form.Group>
+                      </Col>
+                      <Col sm={3}>
+                        <Form.Group>
+                          <Form.Label>Chapter 8</Form.Label>
+                          <Form.Control
+                            type="text"
+                            name="chapter8Score"
+                            placeholder="Chapter 8 Score"
+                            disabled={this.state.disableForm2}
+                            defaultValue={this.state.chapter8Score}
                             onChange={this.onChange}
                           />
                         </Form.Group>
@@ -726,28 +720,13 @@ class Admin extends Component {
                     <Row>
                       <Col sm={3}>
                         <Form.Group>
-                          <Form.Label>Chapter 8</Form.Label>
-                          <Form.Control
-                            type="text"
-                            className="form-control"
-                            name="chapter8Score"
-                            placeholder="Chapter 8 Score"
-                            disabled={this.state.disableForm2}
-                            value={this.state.chapter8Score}
-                            onChange={this.onChange}
-                          />
-                        </Form.Group>
-                      </Col>
-                      <Col sm={3}>
-                        <Form.Group>
                           <Form.Label>Chapter 9</Form.Label>
                           <Form.Control
                             type="text"
-                            className="form-control"
                             name="chapter9Score"
                             placeholder="Chapter 9 Score"
                             disabled={this.state.disableForm2}
-                            value={this.state.chapter9Score}
+                            defaultValue={this.state.chapter9Score}
                             onChange={this.onChange}
                           />
                         </Form.Group>
@@ -757,11 +736,10 @@ class Admin extends Component {
                           <Form.Label>Chapter 10</Form.Label>
                           <Form.Control
                             type="text"
-                            className="form-control"
                             name="chapter10Score"
                             placeholder="Chapter 10 Score"
                             disabled={this.state.disableForm2}
-                            value={this.state.chapter10Score}
+                            defaultValue={this.state.chapter10Score}
                             onChange={this.onChange}
                           />
                         </Form.Group>
@@ -771,22 +749,25 @@ class Admin extends Component {
                           <Form.Label>Remarks</Form.Label>
                           <Form.Control
                             type="text"
-                            className="form-control"
                             name="Remarks"
                             placeholder="Remarks"
                             disabled={this.state.disableForm2}
-                            value={this.state.Remarks}
+                            defaultValue={this.state.Remarks}
                             onChange={this.onChange}
                           />
                         </Form.Group>
                       </Col>
+                    </Row>
+                    <Row>
+                      <Col sm={12}>
                       {this.state.error ? (
                         <label>{this.state.error}</label>
                       ) : (
                         ""
                       )}
-                    </Row>
-                    <Row>
+                      </Col>
+                      </Row>
+                      <Row>
                       <Col sm={3}>
                         <Button
                           variant="primary"

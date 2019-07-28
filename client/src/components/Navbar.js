@@ -66,7 +66,7 @@ class NavBar extends Component {
                     : "d-inline")
                 }
               />
-              KPTurst -{" "}
+              KPTrust -{" "}
               <span className="d-lg-inline d-md-inline d-sm-none">
                 Performance Management
               </span>

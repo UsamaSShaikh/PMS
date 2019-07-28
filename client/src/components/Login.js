@@ -78,7 +78,7 @@ class Login extends Component {
                 alt="logo"
                 className="login-img"
               />
-              <h5>Knowledge Part Charitable Trust</h5>
+              <h5>Knowledge Park Charitable Trust</h5>
             </div>
           </div>
           <div className="col-sm-8 right-cnt">
