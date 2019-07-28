@@ -12,7 +12,7 @@ import {
   Nav,
   Tab,
   Col,
-  // Tabs,
+  Alert,
   Row,
   Table,
   Image,
@@ -37,7 +37,7 @@ class Admin extends Component {
       mothersname: "",
       occupation: "",
       income: "",
-      password:"",
+      password: "",
       studentList: [],
       examList: [],
       subjectsList: [],
@@ -54,6 +54,7 @@ class Admin extends Component {
       chapter10Score: 0,
       Remarks: "",
       error: "",
+      success: "",
       disableForm1: false,
       disableForm2: false,
       showClearBtn1: false
@@ -176,11 +177,24 @@ class Admin extends Component {
         if (res.status === 200) {
           // Add Html for Student added message
           console.log("Student Added Successfully!");
-          this.setState({ error: "Student Added Successfully!" });
+          this.setState({ success: "Student Added Successfully!" });
+          setTimeout(
+            function() {
+              this.setState({ success: "" });
+              this.onResetForm1(event);
+            }.bind(this),
+            2000
+          );
         } else {
           if (res.status === 400) {
             console.log("Error Adding Student");
             this.setState({ error: res.data.error.original.sqlMessage });
+            setTimeout(
+              function() {
+                this.setState({ error: "" });
+              }.bind(this),
+              2000
+            );
           }
         }
       })
@@ -190,8 +204,8 @@ class Admin extends Component {
   };
 
   onResetForm1 = event => {
-    event.preventDefault();
-
+    // event.preventDefault();
+    // alert("asdfsad");
     this.setState({
       id: "",
       studentid: "",
@@ -337,6 +351,8 @@ class Admin extends Component {
                             <Form.Label>Student ID:</Form.Label>
                           </strong>
                           <Form.Control
+                            required
+                            required
                             type="text"
                             name="studentid"
                             disabled={this.state.disableForm1}
@@ -352,6 +368,7 @@ class Admin extends Component {
                             <Form.Label>First Name:</Form.Label>
                           </strong>
                           <Form.Control
+                            required
                             type="text"
                             name="firstName"
                             disabled={this.state.disableForm1}
@@ -367,6 +384,7 @@ class Admin extends Component {
                             <Form.Label>Last Name:</Form.Label>
                           </strong>
                           <Form.Control
+                            required
                             type="text"
                             name="lastName"
                             disabled={this.state.disableForm1}
@@ -381,7 +399,8 @@ class Admin extends Component {
                             <Form.Label>DOB:</Form.Label>
                           </strong>
                           <Form.Control
-                            type="date" 
+                            required
+                            type="date"
                             name="dob"
                             disabled={this.state.disableForm1}
                             defaultValue={this.state.dob}
@@ -397,6 +416,7 @@ class Admin extends Component {
                             <Form.Label>Qualification:</Form.Label>
                           </strong>
                           <Form.Control
+                            required
                             type="text"
                             name="qualification"
                             disabled={this.state.disableForm1}
@@ -411,6 +431,7 @@ class Admin extends Component {
                             <Form.Label>Board:</Form.Label>
                           </strong>
                           <Form.Control
+                            required
                             type="text"
                             name="board"
                             disabled={this.state.disableForm1}
@@ -425,6 +446,7 @@ class Admin extends Component {
                             <Form.Label>Email:</Form.Label>
                           </strong>
                           <Form.Control
+                            required
                             type="text"
                             name="email"
                             disabled={this.state.disableForm1}
@@ -439,6 +461,7 @@ class Admin extends Component {
                             <Form.Label>Contact:</Form.Label>
                           </strong>
                           <Form.Control
+                            required
                             type="text"
                             name="contact"
                             disabled={this.state.disableForm1}
@@ -455,6 +478,7 @@ class Admin extends Component {
                             <Form.Label>Father's Name:</Form.Label>
                           </strong>
                           <Form.Control
+                            required
                             type="text"
                             name="fathersname"
                             disabled={this.state.disableForm1}
@@ -469,6 +493,7 @@ class Admin extends Component {
                             <Form.Label>Mother's Name:</Form.Label>
                           </strong>
                           <Form.Control
+                            required
                             type="text"
                             name="mothersname"
                             disabled={this.state.disableForm1}
@@ -483,6 +508,7 @@ class Admin extends Component {
                             <Form.Label>Occupation:</Form.Label>
                           </strong>
                           <Form.Control
+                            required
                             type="text"
                             name="occupation"
                             disabled={this.state.disableForm1}
@@ -497,6 +523,7 @@ class Admin extends Component {
                             <Form.Label>Family Income:</Form.Label>
                           </strong>
                           <Form.Control
+                            required
                             type="text"
                             name="income"
                             disabled={this.state.disableForm1}
@@ -505,11 +532,33 @@ class Admin extends Component {
                           />
                         </Form.Group>
                       </Col>
-                      {this.state.error ? (
-                        <label>{this.state.error}</label>
-                      ) : (
-                        ""
-                      )}
+                    </Row>
+
+                    <Row>
+                      <Col sm={12}>
+                        <span>
+                          {this.state.error ? (
+                            <Alert variant="danger" className="d-inline">
+                              {this.state.error}
+                            </Alert>
+                          ) : (
+                            ""
+                          )}
+                        </span>
+                      </Col>
+                    </Row>
+                    <Row>
+                      <Col sm={12}>
+                        <span className="">
+                          {this.state.success ? (
+                            <Alert variant="success" className="d-inline">
+                              {this.state.success}
+                            </Alert>
+                          ) : (
+                            ""
+                          )}
+                        </span>
+                      </Col>
                     </Row>
                     <hr />
                     <Row>
@@ -546,6 +595,7 @@ class Admin extends Component {
                         <Form.Group>
                           <Form.Label>Academics:</Form.Label>
                           <Form.Control
+                            required
                             type="text"
                             name="academics"
                             disabled={this.state.disableForm2}
@@ -558,6 +608,7 @@ class Admin extends Component {
                         <Form.Group>
                           <Form.Label>Student</Form.Label>
                           <Form.Control
+                            required
                             as="select"
                             ref="studentSelected"
                             disabled={this.state.disableForm2}
@@ -576,6 +627,7 @@ class Admin extends Component {
                         <Form.Group>
                           <Form.Label>Exam</Form.Label>
                           <Form.Control
+                            required
                             as="select"
                             ref="examSelected"
                             disabled={this.state.disableForm2}
@@ -594,6 +646,7 @@ class Admin extends Component {
                         <Form.Group>
                           <Form.Label>Select Subject</Form.Label>
                           <Form.Control
+                            required
                             as="select"
                             ref="subjectSelected"
                             disabled={this.state.disableForm2}
@@ -614,6 +667,7 @@ class Admin extends Component {
                         <Form.Group>
                           <Form.Label>Chapter 1</Form.Label>
                           <Form.Control
+                            required
                             type="text"
                             className="form-control"
                             name="chapter1Score"
@@ -628,6 +682,7 @@ class Admin extends Component {
                         <Form.Group>
                           <Form.Label>Chapter 2</Form.Label>
                           <Form.Control
+                            required
                             type="text"
                             placeholder="Chapter 2 Score"
                             disabled={this.state.disableForm2}
@@ -640,6 +695,7 @@ class Admin extends Component {
                         <Form.Group>
                           <Form.Label>Chapter 3</Form.Label>
                           <Form.Control
+                            required
                             type="text"
                             name="chapter3Score"
                             placeholder="Chapter 3 Score"
@@ -653,6 +709,7 @@ class Admin extends Component {
                         <Form.Group>
                           <Form.Label>Chapter 4</Form.Label>
                           <Form.Control
+                            required
                             type="text"
                             name="chapter4Score"
                             placeholder="Chapter 4 Score"
@@ -668,6 +725,7 @@ class Admin extends Component {
                         <Form.Group>
                           <Form.Label>Chapter 5</Form.Label>
                           <Form.Control
+                            required
                             type="text"
                             name="chapter5Score"
                             placeholder="Chapter 5 Score"
@@ -681,6 +739,7 @@ class Admin extends Component {
                         <Form.Group>
                           <Form.Label>Chapter 6</Form.Label>
                           <Form.Control
+                            required
                             type="text"
                             name="chapter6Score"
                             placeholder="Chapter 6 Score"
@@ -694,6 +753,7 @@ class Admin extends Component {
                         <Form.Group>
                           <Form.Label>Chapter 7</Form.Label>
                           <Form.Control
+                            required
                             type="text"
                             name="chapter7Score"
                             placeholder="Chapter 7 Score"
@@ -707,6 +767,7 @@ class Admin extends Component {
                         <Form.Group>
                           <Form.Label>Chapter 8</Form.Label>
                           <Form.Control
+                            required
                             type="text"
                             name="chapter8Score"
                             placeholder="Chapter 8 Score"
@@ -722,6 +783,7 @@ class Admin extends Component {
                         <Form.Group>
                           <Form.Label>Chapter 9</Form.Label>
                           <Form.Control
+                            required
                             type="text"
                             name="chapter9Score"
                             placeholder="Chapter 9 Score"
@@ -735,6 +797,7 @@ class Admin extends Component {
                         <Form.Group>
                           <Form.Label>Chapter 10</Form.Label>
                           <Form.Control
+                            required
                             type="text"
                             name="chapter10Score"
                             placeholder="Chapter 10 Score"
@@ -748,6 +811,7 @@ class Admin extends Component {
                         <Form.Group>
                           <Form.Label>Remarks</Form.Label>
                           <Form.Control
+                            required
                             type="text"
                             name="Remarks"
                             placeholder="Remarks"
@@ -758,16 +822,35 @@ class Admin extends Component {
                         </Form.Group>
                       </Col>
                     </Row>
-                    <Row>
+                    <Row className={this.state.error ? "d-block" : "d-none"}>
                       <Col sm={12}>
-                      {this.state.error ? (
-                        <label>{this.state.error}</label>
-                      ) : (
-                        ""
-                      )}
+                        <span>
+                          {this.state.error ? (
+                            <Alert variant="danger">
+                              <Alert.Heading>{this.state.error}</Alert.Heading>
+                            </Alert>
+                          ) : (
+                            ""
+                          )}
+                        </span>
                       </Col>
-                      </Row>
-                      <Row>
+                    </Row>
+                    <Row className={this.state.success ? "d-block" : "d-none"}>
+                      <Col sm={12}>
+                        <span className="">
+                          {this.state.success ? (
+                            <Alert variant="success">
+                              <Alert.Heading>
+                                {this.state.success}
+                              </Alert.Heading>
+                            </Alert>
+                          ) : (
+                            ""
+                          )}
+                        </span>
+                      </Col>
+                    </Row>
+                    <Row>
                       <Col sm={3}>
                         <Button
                           variant="primary"

@@ -38,7 +38,8 @@ class NavBar extends Component {
           href="/profile"
           className={
             "nav-item " +
-            (this.props.location.pathname === "/profile" ? "active" : "")
+            (this.props.location.pathname === "/profile" ? "active" : "") +
+            (this.props.location.pathname === "/admin" ? "d-none" : "")
           }
         >
           User
@@ -66,7 +67,7 @@ class NavBar extends Component {
                     : "d-inline")
                 }
               />
-             KPTrust -{" "}
+              KPTrust -{" "}
               <span className="d-lg-inline d-md-inline d-sm-none">
                 Performance Management
               </span>
