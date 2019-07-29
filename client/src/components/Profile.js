@@ -9,7 +9,16 @@ import {
   getStudentStandard,
   getSyllabusData
 } from "./UserFunctions";
-import { Nav, Tab, Col, Tabs, Row, Table, Image } from "react-bootstrap";
+import {
+  Nav,
+  Tab,
+  Col,
+  Tabs,
+  Row,
+  Table,
+  Image,
+  ListGroup
+} from "react-bootstrap";
 
 class Profile extends Component {
   state = {
@@ -216,7 +225,7 @@ class Profile extends Component {
         if (res.status === 200) {
           console.log("Syllabus Data Found!");
           this.setState({ syllabusData: res.data, showSyllabusTable: true });
-          console.log(this.state.syllabusData)
+          console.log(this.state.syllabusData);
         } else {
           if (res.status === 400) {
             console.log("Error in Syllabus Data");
@@ -226,7 +235,7 @@ class Profile extends Component {
       .catch(err => {
         console.log(err);
       });
-  }
+  };
 
   toggleDetails = () => {
     if (this.refs.academicYear.value !== "") {
@@ -238,7 +247,7 @@ class Profile extends Component {
 
   toggleSubjectDetails = event => {
     if (
-      this.refs.academicYear2.value !== "" &&      
+      this.refs.academicYear2.value !== "" &&
       this.refs.subjectSelected.value !== ""
     ) {
       this.setState({ isSubjectBtnDisabled: false });
@@ -299,18 +308,38 @@ class Profile extends Component {
 
     let syllabusRowData = this.state.syllabusData.map((item, index) => {
       return (
-        <tr key={item.srno}>
-          <td align="center">{item.chapter1}</td>
-          <td align="center">{item.chapter2}</td>
-          <td align="center">{item.chapter3}</td>
-          <td align="center">{item.chapter4}</td>
-          <td align="center">{item.chapter5}</td>
-          <td align="center">{item.chapter6}</td>
-          <td align="center">{item.chapter7}</td>
-          <td align="center">{item.chapter8}</td>
-          <td align="center">{item.chapter9}</td>
-          <td align="center">{item.chapter10}</td>
-        </tr>
+        <ListGroup as="ul" key={item.srno}>
+          <ListGroup.Item as="li" action variant="scondary">
+            <strong>{item.chapter1}</strong>
+          </ListGroup.Item>
+          <ListGroup.Item as="li" action variant="scondary">
+            <strong>{item.chapter2}</strong>
+          </ListGroup.Item>
+          <ListGroup.Item as="li" action variant="scondary">
+            <strong>{item.chapter3}</strong>
+          </ListGroup.Item>
+          <ListGroup.Item as="li" action variant="scondary">
+            <strong>{item.chapter4}</strong>
+          </ListGroup.Item>
+          <ListGroup.Item as="li" action variant="scondary">
+            <strong>{item.chapter5}</strong>
+          </ListGroup.Item>
+          <ListGroup.Item as="li" action variant="scondary">
+            <strong>{item.chapter6}</strong>
+          </ListGroup.Item>
+          <ListGroup.Item as="li" action variant="scondary">
+            <strong>{item.chapter7}</strong>
+          </ListGroup.Item>
+          <ListGroup.Item as="li" action variant="scondary">
+            <strong>{item.chapter8}</strong>
+          </ListGroup.Item>
+          <ListGroup.Item as="li" action variant="scondary">
+            <strong>{item.chapter9}</strong>
+          </ListGroup.Item>
+          <ListGroup.Item as="li" action variant="scondary">
+            <strong>{item.chapter10}</strong>
+          </ListGroup.Item>
+        </ListGroup>
       );
     });
 
@@ -356,7 +385,7 @@ class Profile extends Component {
                           <tr>
                             <th>First Name</th>
                             <th>Last Name</th>
-                            <th>Email</th>                            
+                            <th>Email</th>
                           </tr>
                         </thead>
                         <tbody>
@@ -511,11 +540,13 @@ class Profile extends Component {
                   </Tabs>
                 </Tab.Pane>
                 <Tab.Pane eventKey="syllabus">
-                  <form onSubmit={this.showSyllabusData} className="mt-4">
+                  <form onSubmit={this.showSyllabusData}>
                     <Row>
-                      <label className="col-sm-2">
-                        <strong>Academics:</strong>{" "}
-                      </label>
+                      <Col sm={12}>
+                        <label>
+                          <strong>Academics:</strong>
+                        </label>
+                      </Col>
                       <Col sm={3}>
                         <select
                           ref="academicYear3"
@@ -568,21 +599,16 @@ class Profile extends Component {
                       </Col>
                     </Row>
                   </form>
-                  <div className="table-cnt">
-                    <Table
-                      striped
-                      bordered
-                      variant="dark"
+                  <Row>
+                    <div
                       className={
-                        "mt-4 " +
+                        "col-md-5 col-sm-6 col-xs-12 mt-4 " +
                         (this.state.showSyllabusTable ? "d-table" : "d-none")
                       }
                     >
-                      <tbody>
-                        {syllabusRowData}
-                      </tbody>
-                    </Table>
-                  </div>
+                      {syllabusRowData}
+                    </div>
+                  </Row>
                 </Tab.Pane>
               </Tab.Content>
             </Col>
