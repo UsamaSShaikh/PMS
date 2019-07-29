@@ -11,6 +11,8 @@ const Student = require("../models/Students");
 const Admin = require("../models/Admin");
 const Academics = require("../models/Academics");
 const Subjects = require("../models/Subjects");
+const Standards = require("../models/Standards");
+const Syllabus = require("../models/Syllabus");
 const MarkSheet = require("../models/MarkSheet");
 const Exams = require("../models/Exams");
 
@@ -307,6 +309,61 @@ users.post("/studentSubjects", (req, res) => {
     })
     .catch(err => {
       console.log("Us is here Subjects");
+      res.status(400).json({ error: err });
+    });
+});
+
+users.post("/studentStandard", (req, res) => {
+  console.log("studentStandard");
+  Standards.findAll()
+    .then(standard => {
+      // Check if record exists in db
+      console.log("Standard Exists")
+      if (standard) {
+        console.log("Standard Found!");
+        res.send(standard);
+      } else {
+        res.status(400).send({
+          status: 400,
+          message: "Standard does not exists 1",
+          type: "internal"
+        });
+      }
+    })
+    .catch(err => {
+      console.log("Us is here Standard");
+      res.status(400).json({ error: err });
+    });
+});
+
+
+users.post("/studentSyllabus", (req, res) => {
+  const userData = {};
+  console.log("Route Student Syllabus: ")
+  console.log(req.body);
+  Syllabus.findAll({
+    where: {
+      academicyear: req.body.academicyear,
+      standard: req.body.standardid,
+      subjectid: req.body.subjectid
+    }
+  },
+    { raw: true, hierarchy: true, mapToModel: false }
+  )
+    .then(user => {
+      console.log("Academics Exists")
+      if (user) {
+        res.send(user);
+      } else {
+        res.status(400).send({
+          status: 400,
+          message: "Invalid Syllabus",
+          type: "internal"
+        });
+      }
+    })
+    .catch(err => {
+      console.log("Us is here 4");
       res.status(400).json({ error: err });
     });
 });

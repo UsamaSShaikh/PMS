@@ -135,6 +135,43 @@ export const getStudentSubjects = () => {
     });
 };
 
+export const getStudentStandard = () => {
+  console.log("getStudentStandard : ");
+  return axios
+    .post("users/studentStandard")
+    .then(res => {
+      console.log("User Functions Standard Successfull!");
+      console.log(res);
+      return res;
+    })
+    .catch(err => {
+      console.log("Error User Standard");
+      console.log(err);
+      return err.response;
+    });
+}
+
+export const getSyllabusData = user => {
+  console.log("getSyllabusData : ");
+  console.log(user);
+  return axios
+    .post("users/studentSyllabus", {
+      academicyear: user.academics,
+      standardid: user.standard,
+      subjectid: user.subject
+    })
+    .then(res => {
+      console.log("User Functions Syllabus success");
+      // console.log(res);
+      return res;
+    })
+    .catch(err => {
+      console.log("User Functions Syllabus error");
+      console.log(err);
+      return err.response;
+    });
+};
+
 export const getStudentMarks = user => {
   console.log("getStudentMarks : ");
   console.log(user);
